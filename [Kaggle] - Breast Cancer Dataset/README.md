@@ -23,6 +23,14 @@ Este repositório contém notebooks de estudo e experimentação em Ciência de 
 - Validação cruzada e análise de performance.
 - Avaliação com métricas como acurácia, matriz de confusão, classification report e curva ROC.
 
+## Próximos Passos
+
+- Testar outros modelos (SVM, Logistic Regression, XGBoost, etc).
+- Implementar pipelines de pré-processamento.
+- Tratar desbalanceamento de classes.
+- Ajustar hiperparâmetros com GridSearchCV.
+- Adicionar explicabilidade (SHAP/LIME).
+
 ## Como Executar
 
 1. Clone o repositório:
@@ -34,14 +42,6 @@ Este repositório contém notebooks de estudo e experimentação em Ciência de 
     pip install -r requirements.txt
     ```
 3. Abra os notebooks no Jupyter ou VS Code.
-
-## Próximos Passos
-
-- Testar outros modelos (SVM, Logistic Regression, XGBoost, etc).
-- Implementar pipelines de pré-processamento.
-- Tratar desbalanceamento de classes.
-- Ajustar hiperparâmetros com GridSearchCV.
-- Adicionar explicabilidade (SHAP/LIME).
 
 ## Referências
 
