@@ -79,7 +79,7 @@ Este repositório contém notebooks de estudo e experimentação em Ciência de 
 
 ## Referências
 
-- [Kaggle Dataset](https://www.kaggle.com/datasets/yasserh/breast-cancer-dataset)
+- [Kaggle Dataset - Breast Cancer Data](https://www.kaggle.com/datasets/yasserh/breast-cancer-dataset)
 
 ---
 
