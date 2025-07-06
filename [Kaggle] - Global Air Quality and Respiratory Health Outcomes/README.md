@@ -9,14 +9,12 @@ Este repositório contém um notebook de estudo e experimentação em Ciência d
   - `air_quality_health_dataset.csv`: Base de dados utilizada (não versionar se for grande/confidencial).
 
 ## Objetivos
-
 - Explorar e entender o conjunto de dados.
 - Realizar pré-processamento e análise exploratória.
 - Construir e avaliar modelos de regressão para prever internações hospitalares.
 - Praticar técnicas de engenharia de features e avaliação de modelos.
 
 ## Técnicas Utilizadas
-
 - **Leitura e análise exploratória:**
     - Carregamento do dataset com pandas.
     - Análise de tipos, valores nulos, duplicados e estatísticas descritivas.
@@ -37,7 +35,6 @@ Este repositório contém um notebook de estudo e experimentação em Ciência d
     - Visualização da importância das variáveis.
 
 ## Próximos Passos para Melhoria
-
 - **Feature Engineering:** Criar novas variáveis derivadas, explorar interações, médias móveis, lags temporais, etc.
 - **Variáveis Categóricas:** Aplicar encoding adequado (ex: OneHotEncoder) para ‘city’ e ‘population_density’.
 - **Escalonamento:** Aplicar scaler nas variáveis numéricas para beneficiar alguns modelos.
@@ -48,26 +45,11 @@ Este repositório contém um notebook de estudo e experimentação em Ciência d
 - **Dados:** Buscar mais variáveis externas (clima, eventos, políticas públicas) para enriquecer o modelo.
 - **Documentação:** Adicionar mais comentários explicando decisões e interpretações dos resultados.
 
-## Como Executar
-
-1. Clone o repositório:
-    ```bash
-    git clone https://github.com/seu-usuario/seu-repo.git
-    ```
-2. Crie o ambiente conda:
-    ```bash
-    conda env create -f environment.yml
-    ```
-3. Ative o ambiente:
-    ```bash
-    conda activate nome-do-seu-ambiente
-    ```
-4. Abra o notebook no Jupyter ou VS Code.
 
 ## Referências
 
-- [Kaggle Dataset](https://www.kaggle.com/datasets/sagnik1511/car-insurance-data/data)
+- [Kaggle Global Air Quality and Respiratory Health Outcomes](https://www.kaggle.com/datasets/tfisthis/global-air-quality-and-respiratory-health-outcomes)
 
 ---
 
-*Projeto de estudos em Ciência de Dados -
+*Projeto de estudos em Ciência de Dados - Lucas Lopes*

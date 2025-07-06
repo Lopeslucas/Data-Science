@@ -3,13 +3,11 @@
 Este repositório contém notebooks de estudo e experimentação em Ciência de Dados, utilizando o conjunto de dados de câncer de mama de Wisconsin (Kaggle).
 
 ## Estrutura do Projeto
-
 **[Kaggle] - Breast Cancer Dataset/**
 - `EDA-v1.ipynb`: Análise exploratória, tratamento de dados, seleção de features e modelagem com RandomForest.
-- `breast-cancer.csv`: Base de dados utilizada (não versionar se for grande/confidencial).
+- `breast-cancer.csv`: Base de dados utilizada
 
 ## Objetivos
-
 - ✅ Explorar e entender o conjunto de dados.
 - ✅ Realizar pré-processamento e análise exploratória.
 - ✅ Construir e avaliar modelos de classificação para prever câncer maligno/benigno.
@@ -17,39 +15,39 @@ Este repositório contém notebooks de estudo e experimentação em Ciência de 
 
 ## Técnicas Utilizadas
 
-- Leitura e exploração de dados:
+- **Leitura e exploração de dados:**
     - Leitura do CSV com pandas
     - Análise de tipos de dados, valores nulos e duplicados
     - Estatísticas descritivas com describe()
     - Verificação de balanceamento da variável alvo
-- Pré-processamento:
+- **Pré-processamento:**
     - Remoção de coluna irrelevante (ID)
     - Conversão da variável alvo de categórica para numérica (map B/M para 0/1)
-- Análise exploratória:
+- **Análise exploratória:**
     - Heatmap de correlação entre variáveis numéricas (seaborn)
-- Modelagem:
+- **Modelagem:**
     - Separação em variáveis preditoras (X) e alvo (y)
     - Divisão em treino e teste (train_test_split, com stratify)
-- Seleção de features:
+- **Seleção de features:**
     - RandomForestClassifier para calcular feature importance
     - Teste de performance variando o número de features (laço for + validação cruzada)
-- Validação:
+- **Validação:**
     - Validação cruzada (cross_val_score, 5-fold) para comparar diferentes conjuntos de features
-- Avaliação de modelo:
+- **Avaliação de modelo:**
     - Métricas: acurácia, classification_report, matriz de confusão
     - Curva ROC e cálculo da AUC
     - Análise de falsos positivos e falsos negativos
     - Foco em recall da classe 1 (maligno)
-- Técnicas de balanceamento:
+- **Técnicas de balanceamento:**
     - Aplicação do SMOTE para oversampling
     - Uso de class_weight='balanced' no RandomForest
     - Ajuste de threshold para maximizar recall
     - Comparação quantitativa entre as abordagens
-- Visualização:
+- **Visualização:**
     - Gráficos de barras para feature importance
     - Gráfico de linha para desempenho vs. número de features
     - Curva ROC plotada
-- Documentação e justificativa:
+- **Documentação e justificativa:**
     - Discussão sobre trade-off entre sensibilidade e especificidade
     - Interpretação dos resultados
 
@@ -67,18 +65,7 @@ Esse notebook foi um caso de estudo, onde eu consegui exercitar a parte da anál
 - Técnicas de balanceamento (smote, class_weight e Threshold)
 - Pipeline de pré-processamento
 - Modularização e automação das etapas
-
-## Como Executar
-
-1. Clone o repositório:
-    ```bash
-    git clone https://github.com/seu-usuario/seu-repo.git
-    ```
-2. Instale as dependências:
-    ```bash
-    pip install -r requirements.txt
-    ```
-3. Abra os notebooks no Jupyter ou VS Code.
+- Melhorar o entendimento das Métricas
 
 ## Referências
 

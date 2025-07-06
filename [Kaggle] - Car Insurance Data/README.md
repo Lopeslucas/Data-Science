@@ -48,26 +48,11 @@ Este repositório contém um notebook de estudo e experimentação em Ciência d
 - Realizar validação cruzada mais robusta e análise de overfitting.
 - Documentar decisões e justificar escolhas de features/modelos/métricas.
 
-## Como Executar
-
-1. Clone o repositório:
-    ```bash
-    git clone https://github.com/seu-usuario/seu-repo.git
-    ```
-2. Crie o ambiente conda:
-    ```bash
-    conda env create -f environment.yml
-    ```
-3. Ative o ambiente:
-    ```bash
-    conda activate nome-do-seu-ambiente
-    ```
-4. Abra o notebook no Jupyter ou VS Code.
 
 ## Referências
 
-- [Kaggle Dataset](https://www.kaggle.com/datasets/sagnik1511/car-insurance-data)
+- [Kaggle Car Insurance Data](https://www.kaggle.com/datasets/sagnik1511/car-insurance-data)
 
 ---
 
-*Projeto de estudos em Ciência de Dados
+*Projeto de estudos em Ciência de Dados - Lucas Lopes*
