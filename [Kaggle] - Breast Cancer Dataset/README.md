@@ -61,8 +61,7 @@ Este repositório contém notebooks de estudo e experimentação em Ciência de 
 - Automatize: Pense em modularizar e automatizar etapas para reuso e escalabilidade.
 
 ## Conclusão:
-- Esse notebook foi um caso de estudo, onde eu consegui exercitar a parte da análise exploratória, uso do modelo de Classifição RandomForrest. Na reta final, eu acabei fazendo mais uso da IA para montar o fluxo de comparação dos modelos após aplicar técnicas de balanceamento dos dados e na parte de "conclusão" da Análise. Mesmo tendo feito uso da IA (Copilot), eu mapei alguns itens que eu devo procurar artigos para leitura complementar e entendimento:
-
+Esse notebook foi um caso de estudo, onde eu consegui exercitar a parte da análise exploratória, uso do modelo de Classifição RandomForrest. Na reta final, eu acabei fazendo mais uso da IA para montar o fluxo de comparação dos modelos após aplicar técnicas de balanceamento dos dados e na parte de "conclusão" da Análise. Mesmo tendo feito uso da IA (Copilot), eu mapei alguns itens que eu devo procurar artigos para leitura complementar e entendimento:
 - Conceito de Trade-off
 - Uso do "predict_proba"
 - Técnicas de balanceamento (smote, class_weight e Threshold)
