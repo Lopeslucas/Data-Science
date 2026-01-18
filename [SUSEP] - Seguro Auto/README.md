@@ -73,12 +73,11 @@ Essas transformações tiveram como foco aumentar o valor informacional dos dado
 ---
 
 ## Modelagem
-O primeiro modelo implementado foi a Regressão Logística, escolhida por:
-•	Alta interpretabilidade
-•	Facilidade de explicação para áreas de negócio
-•	Uso frequente em contextos regulados como seguros
+Estamos assumindo que o modelo roda depois que o sinistro foi avisado, mas antes da análise/liquidação.
+• OCORRÊNCIA → AVISO → 🔮 MODELO → ANÁLISE → LIQUIDAÇÃO
 
-A avaliação do modelo foi realizada utilizando métricas adequadas ao problema de classificação, considerando o impacto de falsos positivos e falsos negativos.
+
+
 ---
 
 ## Métricas e Avaliação
