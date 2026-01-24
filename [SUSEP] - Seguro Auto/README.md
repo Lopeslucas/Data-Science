@@ -10,11 +10,11 @@ No mercado de Seguros Auto, especialmente no contexto corporativo (PJ), a corret
 Neste cenário, a área de dados atua como suporte à tomada de decisão, oferecendo modelos preditivos e análises descritivas que ajudam a antecipar eventos de indenização.
 Este projeto utiliza uma base pública da SUSEP (Superintendência de Seguros Privados) para simular um problema real enfrentado por seguradoras.
 
----
+
 ## Objetivo do Projeto
 Desenvolver uma análise exploratória e um modelo de Machine Learning capazes de estimar a probabilidade de ocorrência de indenização em apólices de seguro auto, apoiando decisões de negócio relacionadas à gestão de risco.
 
----
+
 ## Perguntas de Negócio
 O projeto busca responder às seguintes perguntas:
 1.	Quais características das apólices e dos segurados estão mais associadas à ocorrência de indenização?
@@ -22,7 +22,7 @@ O projeto busca responder às seguintes perguntas:
 3.	Como um modelo preditivo pode auxiliar na priorização de análises manuais?
 4.	Qual seria o impacto potencial da utilização desse modelo no processo operacional de uma seguradora?
 
----
+
 ## Definição do Problema Analítico
 O problema foi estruturado como uma tarefa de classificação binária, onde o objetivo é prever se uma apólice resultará ou não em indenização.
 
@@ -37,13 +37,11 @@ A escolha de uma variável binária permite:
 - Uso de modelos interpretáveis (ex: Regressão Logística)
 - Alinhamento com decisões operacionais (analisar vs não analisar)
 
----
 ## Base de Dados
 - Fonte: SUSEP – Dados públicos de seguros
 - Tipo: Dados estruturados
 - Granularidade: Apólice / Sinistro
 
----
 ##  Análise Exploratória (EDA)
 Durante a etapa de Data Understanding, foram realizadas:
 
@@ -204,22 +202,11 @@ As métricas foram selecionadas com foco em impacto de negócio:
    - Justificativa negócio: Permite escolher threshold operacional baseado em restrições de recursos humanos
 
 ### Trade-offs de Negócio
-
 Em um cenário de seguros, o custo de erro varia:
 - **Falso Negativo (caro)**: Deixar de identificar apólice de alto risco → sinistro maior que previsto
 - **Falso Positivo (menos caro)**: Análise manual desnecessária → overhead operacional controlável
 
 Logo, o modelo deve **priorizar Recall** sobre Precision, com threshold otimizado para capturar máximo de sinistros relevantes dentro da capacidade operacional disponível.
-
----
-## Ciclo de Vida do Modelo (CRISP-DM)
-O projeto segue as etapas do CRISP-DM:
-1.	Business Understanding
-2.	Data Understanding
-3.	Data Preparation
-4.	Modeling
-5.	Evaluation
-6.	Deployment (conceitual)
 
 ---
 ## Resumo de Técnicas e Decisões Aplicadas
