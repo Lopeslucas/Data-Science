@@ -8,24 +8,21 @@ No mercado de Seguros Auto, especialmente no contexto corporativo (PJ), a corret
 - Melhorar a eficiência operacional
 
 Neste cenário, a área de dados atua como suporte à tomada de decisão, oferecendo modelos preditivos e análises descritivas que ajudam a antecipar eventos de indenização.
-
 Este projeto utiliza uma base pública da SUSEP (Superintendência de Seguros Privados) para simular um problema real enfrentado por seguradoras.
----
 
+---
 ## Objetivo do Projeto
 Desenvolver uma análise exploratória e um modelo de Machine Learning capazes de estimar a probabilidade de ocorrência de indenização em apólices de seguro auto, apoiando decisões de negócio relacionadas à gestão de risco.
 
-O modelo não substitui decisões humanas, mas atua como um mecanismo de priorização, indicando apólices com maior risco relativo.
 ---
-
 ## Perguntas de Negócio
 O projeto busca responder às seguintes perguntas:
 1.	Quais características das apólices e dos segurados estão mais associadas à ocorrência de indenização?
 2.	É possível identificar perfis de maior risco com base em variáveis demográficas, regionais e contratuais?
 3.	Como um modelo preditivo pode auxiliar na priorização de análises manuais?
 4.	Qual seria o impacto potencial da utilização desse modelo no processo operacional de uma seguradora?
----
 
+---
 ## Definição do Problema Analítico
 O problema foi estruturado como uma tarefa de classificação binária, onde o objetivo é prever se uma apólice resultará ou não em indenização.
 
@@ -39,14 +36,14 @@ A escolha de uma variável binária permite:
 - Simplicidade de interpretação
 - Uso de modelos interpretáveis (ex: Regressão Logística)
 - Alinhamento com decisões operacionais (analisar vs não analisar)
----
 
+---
 ## Base de Dados
 - Fonte: SUSEP – Dados públicos de seguros
 - Tipo: Dados estruturados
 - Granularidade: Apólice / Sinistro
----
 
+---
 ##  Análise Exploratória (EDA)
 Durante a etapa de Data Understanding, foram realizadas:
 
@@ -84,8 +81,8 @@ Durante a etapa de Data Understanding, foram realizadas:
 - **Tratamento de valores inválidos**: Código 0 em variáveis categóricas removido como ruído administrativo
 - **Recorte de população**: Exclusão de registros com idade <16 ou >100 (rejustamento: 409.440 registros)
 - **Definição da variável-alvo**: PAGOU_INDENIZACAO = 1 se INDENIZ > 0, else 0 (independente de salvados/ressarcimentos)
----
 
+---
 ## Feature Engineering
 Foram criadas variáveis para enriquecer o modelo, mantendo coerência com o negócio:
 
@@ -120,8 +117,8 @@ Foram criadas variáveis para enriquecer o modelo, mantendo coerência com o neg
 - **Idade limpa**: Filtro de domínio (16-100 anos) para remover registros administrativamente inválidos
 - **Faixas etárias**: Distribuição não uniforme deliberada, alinhada com categorias atuariais do mercado de seguros
 - **Variáveis temporais em dias**: Escolha de escala linear para melhor interpretação de impacto negócio
----
 
+---
 ## Modelagem
 
 ### Pipeline de Pré-processamento
@@ -178,7 +175,6 @@ Estamos assumindo que o modelo roda depois que o sinistro foi avisado, mas antes
 - OCORRÊNCIA → AVISO → **MODELO** → ANÁLISE → LIQUIDAÇÃO
 
 ---
-
 ## Métricas e Avaliação
 As métricas foram selecionadas com foco em impacto de negócio:
 
@@ -216,7 +212,6 @@ Em um cenário de seguros, o custo de erro varia:
 Logo, o modelo deve **priorizar Recall** sobre Precision, com threshold otimizado para capturar máximo de sinistros relevantes dentro da capacidade operacional disponível.
 
 ---
-
 ## Ciclo de Vida do Modelo (CRISP-DM)
 O projeto segue as etapas do CRISP-DM:
 1.	Business Understanding
@@ -227,7 +222,6 @@ O projeto segue as etapas do CRISP-DM:
 6.	Deployment (conceitual)
 
 ---
-
 ## Resumo de Técnicas e Decisões Aplicadas
 
 ### Técnicas de EDA
@@ -269,7 +263,6 @@ O projeto segue as etapas do CRISP-DM:
 | Threshold operacional: TBD | Será definido após simulação operacional (Recall vs Precision) |
 
 ---
-
 ## Conclusão
 Este projeto demonstra como Ciência de Dados aplicada a Seguros pode apoiar decisões estratégicas, combinando:
 - Análise exploratória orientada a negócio
