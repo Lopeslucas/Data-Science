@@ -80,6 +80,8 @@ Durante a etapa de Data Understanding, foram realizadas:
 - **Recorte de população**: Exclusão de registros com idade <16 ou >100 (rejustamento: 409.440 registros)
 - **Definição da variável-alvo**: PAGOU_INDENIZACAO = 1 se INDENIZ > 0, else 0 (independente de salvados/ressarcimentos)
 
+***Classes raras, foram agrupadas para melhoria na capacidade de generalização do modelo e redução do risco de overfiting. Reduzindo a flexibilidade excessiva do modelo.***
+
 ---
 ## Feature Engineering
 Foram criadas variáveis para enriquecer o modelo, mantendo coerência com o negócio:
