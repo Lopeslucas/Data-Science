@@ -156,7 +156,6 @@ A transformação dos dados foi implementada através de um `ColumnTransformer` 
 - Justificativa negócio: 
   - Modelo interpretável (coeficientes indicam direção e magnitude do efeito)
   - Probabilidades bem calibradas (importante para decisão de priorização operacional)
-  - Baselinequick que permite iterações rápidas
   - Menos propenso a overfitting que modelos complexos
 
 ### Divisão Treino/Teste com Validação Temporal
@@ -239,7 +238,7 @@ Logo, o modelo deve **priorizar Recall** sobre Precision, com threshold otimizad
 | Split | Temporal (cutoff 2020-08-01) | Detecção de drift; simula cenário real |
 | Balanceamento | class_weight='balanced' | Ajusta custo de erro entre classes |
 
-##Exclusão de DIAS_ATE_AVISO | Remove variável baseada em D_AVI (informação futura não disponível no momento da predição) |
+## Exclusão de DIAS_ATE_AVISO | Remove variável baseada em D_AVI (informação futura não disponível no momento da predição) |
 | Conversão de categorias para string | Garante tipos uniformes no preprocessamento; evita erro no OneHotEncoder |
 | Uso de pipe em cross-validation | Mantém consistência: preprocessamento aplicado em cada fold |
 | # Decisões de Negócio Aplicadas
