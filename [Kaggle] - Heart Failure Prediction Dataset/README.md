@@ -41,6 +41,7 @@ Porque qualquer transformação que utilize estatísticas globais pode introduzi
 	- FP = 14
 	- FN = 7
 	- TP = 95
+
 ***Notas:*** 
 - 14 falsos positivos: Que podem ocasionar em impacto de exames desnecessarios. Alerta para pessoas saudaveis que podem trazer um impacto. Porem no contexto de Saude, é um trade-off justo, onde pode se interpretar melhor um falso positivo do que um falso negativo (onde a pessoa vai ter sido informada estar saudavel, porem esta com algum problema de saude).
 - 7 falsos negativos: Como reduzir ainda mais os falsos negativos?
@@ -51,6 +52,7 @@ Implementação da validação cruzada para garantir que a minha metrica de AUC 
 - AUC por Fold: [0.94081779 0.93938307 0.91846007 0.89471142 0.85124366]
 - AUC Médio 0.9089232022197915
 - Desvio Padrão 0.0333614276783346
+
 ***Notas:***
 Tivemos uma boa media, porem tivemos um dos folds com uma AUC muito baixa em relação as demais. Indicando possiveis outliers e confirmando que os meus dados não possuem uma distribuição linear (oque ja havia sido confirmado na sessão de analises graficas). Devido a isso, testar algum outro modelo que não dependa da Linearidade dos Dados.
 
@@ -65,6 +67,7 @@ Tivemos uma boa media, porem tivemos um dos folds com uma AUC muito baixa em rel
 - AUC por Fold: [0.95139885 0.93747011 0.91266141 0.9033446  0.84442164]
 - AUC Médio 0.9098593216566992
 - Desvio Padrão 0.03693310711938147
+
 ***Notas:***
 O modelo de Regressão Logistica, esta com uma estabilidade melhor que o RandomForrest
 
