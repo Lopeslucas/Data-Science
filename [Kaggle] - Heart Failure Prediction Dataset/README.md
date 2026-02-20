@@ -29,8 +29,8 @@ Esta pasta contém um notebook de estudo e experimentação em Ciência de Dados
 	- Tratamento das variaveis numericas com ***padronização/ StandardScaler*** (Age, RestingBP, Cholesterol, FastingBS, MaxHR e Oldpeak).
 
 ***Notas:***
-- Por que fazer a divisão antes do tratamento dos dados?
-Porque qualquer transformação que utilize estatísticas globais pode introduzir data leakage, tornando o modelo otimista artificialmente e prejudicando a generalização.	
+    - Por que fazer a divisão antes do tratamento dos dados?
+    Porque qualquer transformação que utilize estatísticas globais pode introduzir data leakage, tornando o modelo otimista artificialmente e prejudicando a generalização.	
 
 - Implementação do Modelo 
 
@@ -54,14 +54,14 @@ Implementação da validação cruzada para garantir que a minha metrica de AUC 
 - Desvio Padrão 0.0333614276783346
 
 ***Notas:***
-Tivemos uma boa media, porem tivemos um dos folds com uma AUC muito baixa em relação as demais. Indicando possiveis outliers e confirmando que os meus dados não possuem uma distribuição linear (oque ja havia sido confirmado na sessão de analises graficas). Devido a isso, testar algum outro modelo que não dependa da Linearidade dos Dados.
+    Tivemos uma boa media, porem tivemos um dos folds com uma AUC muito baixa em relação as demais. Indicando possiveis outliers e confirmando que os meus dados não possuem uma distribuição linear (oque ja havia sido confirmado na sessão de analises graficas). Devido a isso, testar algum outro modelo que não dependa da Linearidade dos Dados.
 
 ### 5 - Implementação do modelo Random Forrest
 - Utilizando os Hiperparametros: 
-	n_estimators = 300 árvores
-	max_depth = None, Árvores sem limite de profundidade
-	random_state = 42, Resultado reprodutível
-	n_jobs = -1, Paralelização máxima da CPU
+	- n_estimators = 300 árvores
+	- max_depth = None, Árvores sem limite de profundidade
+	- random_state = 42, Resultado reprodutível
+	- n_jobs = -1, Paralelização máxima da CPU
 
 #### 5.1 - Validação cruzada - Random Forrest
 - AUC por Fold: [0.95139885 0.93747011 0.91266141 0.9033446  0.84442164]
@@ -69,7 +69,7 @@ Tivemos uma boa media, porem tivemos um dos folds com uma AUC muito baixa em rel
 - Desvio Padrão 0.03693310711938147
 
 ***Notas:***
-O modelo de Regressão Logistica, esta com uma estabilidade melhor que o RandomForrest
+    O modelo de Regressão Logistica, esta com uma estabilidade melhor que o RandomForrest
 
 
 
