@@ -12,49 +12,15 @@ Este conjunto de dados, intitulado "Fortalecendo Previsões: Revelando a Dinâmi
 - ✅ Realizar pré-processamento e análise exploratória.
 - ✅ Construir e avaliar modelos de regressão para prever o valor pago na "conta de energia".
 - ✅ Comparar técnicas e métricas de avaliação.
-- ⏳ Conclusão para "Negócio"
-
-## Técnicas Utilizadas
-- Análise Exploratória de Dados (EDA)
-- Visualização de Dados
-    - Boxplot para identificar distribuição e outliers nas variáveis numéricas
-    - Boxplot para analisar a variável categórica (structure type) versus a variável alvo
-    - Histplot para visualizar a distribuição das variáveis numéricas
-    - Countplot para verificar a distribuição das categorias
-    - Heatmap de correlação para identificar relações entre variáveis
-- Modelagem Inicial (Sem Tratamento)
-    - Separação de variáveis preditoras e alvo
-    - Split em treino e teste (train_test_split)
-    - Implementação de modelos de regressão:
-        - Linear Regression
-        - Ridge Regression
-        - Lasso Regression
-        - Decision Tree Regressor
-        - Random Forest Regressor
-    - Avaliação dos modelos com métricas: MAE, RMSE, R²
-- Pré-processamento
-    - Identificação e remoção de outliers usando IQR
-    - Tratamento da variável categórica com get_dummies (one-hot encoding)
-- Modelagem Pós-Tratamento
-    - Repetição do split em treino e teste após tratamento
-    - Treinamento dos mesmos modelos de regressão
-    - Avaliação dos modelos com as mesmas métricas
-- Comparação de Resultados
-    - Tabela comparativa das métricas antes e depois do tratamento dos dados
-
-
-## Próximos Passos
- - ⏳ Implementação de Valização Cruzada
- - ⏳ Análise de Feature Importance
- - ⏳ Análise de Resíduos
+- ✅ Conclusão para "Negócio"
 
 ## Conclusão:
-⏳ Em andamento
+Usei como metricas de avaliação R2, MAE e RMSE. Onde obtive bons resultados, indicando 6% de variação nas predições. Tambem foi aplicado tecnicas de analise de residuos e validação cruzada.
+
+Onde foi possivel confirmar que o modelo tem boa performance e desempenho consistente em diferentes subconjuntos de dados, indicando robustez e confiabilidade para uso de projeções de custo energético.
 
 ## Referências
-
 - [Kaggle Dataset - Electricity cost prediction dataset](https://www.kaggle.com/datasets/shalmamuji/electricity-cost-prediction-dataset/data?select=electricity_cost_dataset.csv)
 
 ---
-
 *Projeto de estudos em Ciência de Dados - Lucas Lopes*

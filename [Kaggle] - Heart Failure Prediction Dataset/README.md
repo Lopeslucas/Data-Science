@@ -29,7 +29,7 @@ Esta pasta contém um notebook de estudo e experimentação em Ciência de Dados
 	- Tratamento das variaveis numericas com ***padronização/ StandardScaler*** (Age, RestingBP, Cholesterol, FastingBS, MaxHR e Oldpeak).
 
 ***Notas:***
-    - Por que fazer a divisão antes do tratamento dos dados?
+    Por que fazer a divisão antes do tratamento dos dados?
     Porque qualquer transformação que utilize estatísticas globais pode introduzir data leakage, tornando o modelo otimista artificialmente e prejudicando a generalização.	
 
 - Implementação do Modelo 
