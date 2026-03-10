@@ -26,13 +26,35 @@ Desvantagens
 
 ## Em regressão linear, quais são as principais premissas do modelo e o que acontece se elas forem violadas?
 A regressão linear assume algumas premissas importantes.
+1. Linearidade, ou seja, a relação entre as variáveis independentes e a variável alvo deve ser aproximadamente linear nos parâmetros.
+2. Independência dos erros, ou seja, os resíduos não devem estar correlacionados entre si.
+3. Homocedasticidade, que significa que a variância dos erros deve ser constante ao longo dos valores previstos.
+4. Normalidade dos resíduos, que é importante principalmente para inferência estatística.
+5. Ausência de multicolinearidade forte entre as variáveis explicativas, pois isso pode tornar os coeficientes instáveis.
+6. Quando essas premissas são violadas, podemos ter problemas como coeficientes não confiáveis, pior generalização ou inferências incorretas.
 
-    a. Linearidade, ou seja, a relação entre as variáveis independentes e a variável alvo deve ser aproximadamente linear nos parâmetros.
-    b. Independência dos erros, ou seja, os resíduos não devem estar correlacionados entre si.
-    c. Homocedasticidade, que significa que a variância dos erros deve ser constante ao longo dos valores previstos.
-    d. Normalidade dos resíduos, que é importante principalmente para inferência estatística.
-    e. Ausência de multicolinearidade forte entre as variáveis explicativas, pois isso pode tornar os coeficientes instáveis.
-    f. Quando essas premissas são violadas, podemos ter problemas como coeficientes não confiáveis, pior generalização ou inferências incorretas.
+
+## Qual a diferença entre regressão linear e regressão logística, e por que não podemos usar regressão linear para classificação?
+A regressão linear modela uma relação linear entre as variáveis independentes e a variável alvo, estimando valores contínuos e minimizando o erro quadrático médio.
+
+Já a regressão logística é usada para classificação e modela a probabilidade da classe usando a função logística, ou sigmoide, garantindo que a saída fique entre 0 e 1.
+
+Não usamos regressão linear para classificação porque ela pode prever valores menores que 0 ou maiores que 1, o que não faz sentido para probabilidades. Além disso, a função de custo da regressão linear não é adequada para problemas de classificação.
+
+A regressão logística utiliza máxima verossimilhança e log loss, o que torna o modelo mais adequado para estimar probabilidades e tomar decisões de classificação.
+
+
+## Por que modelos lineares precisam de normalização, mas árvores normalmente não precisam?
+Modelos lineares precisam de normalização porque eles são sensíveis à escala das variáveis.
+
+Quando as variáveis têm magnitudes muito diferentes, como salário e idade, por exemplo, o modelo pode acabar dando mais peso para a variável com valores maiores, porque os coeficientes são calculados levando em conta essa escala.
+
+Além disso, métodos de otimização e regularização, como L1 e L2, também são influenciados pela escala, então a padronização ou normalização ajuda o modelo a convergir melhor e evita distorções.
+
+Já as árvores de decisão não precisam de normalização porque elas não fazem cálculo baseado em distância ou coeficiente, elas apenas testam divisões usando thresholds, como maior ou menor que um valor.
+
+Como a divisão é feita por comparação, a escala da variável não influencia o resultado, então árvores conseguem lidar bem com variáveis em escalas diferentes.
+
 
 ## Lasso x Ridge
 L1 e L2 são técnicas de regularização usadas para evitar overfitting penalizando os coeficientes do modelo.
@@ -44,11 +66,17 @@ Na regularização L2, chamada Ridge, a penalização é feita pela soma dos qua
 Em geral usamos L1 quando queremos seleção de variáveis ou temos alta dimensionalidade, e L2 quando queremos reduzir overfitting e lidar com variáveis correlacionadas.
 
 
-## Qual a diferença entre regressão linear e regressão logística, e por que não podemos usar regressão linear para classificação?
-A regressão linear modela uma relação linear entre as variáveis independentes e a variável alvo, estimando valores contínuos e minimizando o erro quadrático médio.
+## Como a regularização L1 e L2 ajudam a evitar overfitting em modelos lineares?
+A regularização é usada para evitar overfitting em modelos lineares, porque ela adiciona uma penalização na função de custo, fazendo com que os coeficientes não fiquem muito altos.
 
-Já a regressão logística é usada para classificação e modela a probabilidade da classe usando a função logística, ou sigmoide, garantindo que a saída fique entre 0 e 1.
+Quando o modelo tem coeficientes muito grandes, ele tende a se ajustar demais aos dados de treino, aumentando a variância e perdendo capacidade de generalização.
 
-Não usamos regressão linear para classificação porque ela pode prever valores menores que 0 ou maiores que 1, o que não faz sentido para probabilidades. Além disso, a função de custo da regressão linear não é adequada para problemas de classificação.
+A regularização L2 penaliza os coeficientes, reduzindo eles para valores próximos de zero, mas sem zerar, o que ajuda a controlar a complexidade do modelo.
 
-A regressão logística utiliza máxima verossimilhança e log loss, o que torna o modelo mais adequado para estimar probabilidades e tomar decisões de classificação.
+Já a regularização L1 também penaliza, mas pode zerar alguns coeficientes, funcionando como uma forma de seleção de variáveis e ajudando quando temos multicolinearidade.
+
+O nível de penalização é controlado por um hiperparâmetro, geralmente chamado de lambda ou alpha, que define o quanto o modelo vai ser regularizado.
+- Alpha: Define quanto o modelo penaliza coeficientes grandes. A ideia é evitar overfitting, impedindo que os coeficientes cresçam demais para se ajustar perfeitamente aos dados de treino.
+
+
+
