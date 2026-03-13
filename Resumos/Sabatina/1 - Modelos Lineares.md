@@ -79,4 +79,24 @@ O nível de penalização é controlado por um hiperparâmetro, geralmente chama
 - Alpha: Define quanto o modelo penaliza coeficientes grandes. A ideia é evitar overfitting, impedindo que os coeficientes cresçam demais para se ajustar perfeitamente aos dados de treino.
 
 
+## Qual a diferença entre Ridge e Lasso, e quando você usaria cada um?
+A Ridge utiliza regularização L2, onde é adicionada uma penalização na soma dos coeficientes ao quadrado na função de custo.
+Isso faz com que os coeficientes sejam reduzidos, ficando próximos de zero, mas sem zerar totalmente.
+
+A Ridge é muito usada quando temos multicolinearidade, porque ela estabiliza os coeficientes e reduz a variância do modelo.
+
+Já a Lasso usa regularização L1, onde a penalização é feita com o valor absoluto dos coeficientes.
+Isso faz com que alguns coeficientes sejam reduzidos até zero, fazendo seleção automática de variáveis.
+
+As duas técnicas usam um hiperparâmetro, geralmente chamado de lambda ou alpha, que controla a força da penalização. Quanto maior a penalização, menor a variância, mas maior o viés, então existe um trade-off entre overfitting e underfitting.
+
+
+## O que acontece com a função de custo quando adicionamos regularização em modelos lineares?
+Quando adicionamos regularização em modelos lineares, a função de custo passa a ter não só o erro do modelo, mas também um termo de penalização dos coeficientes. Ou seja, o modelo não tenta apenas minimizar o erro, mas também tenta manter os coeficientes menores, para evitar que o modelo fique muito complexo.
+
+Na regularização L2, a penalização é feita com o quadrado dos coeficientes, fazendo com que eles fiquem próximos de zero.
+
+Já na regularização L1, a penalização é feita com o valor absoluto dos coeficientes, podendo fazer alguns coeficientes ficarem exatamente zero, o que gera seleção de variáveis.
+
+Existe um hiperparâmetro, geralmente chamado lambda ou alpha, que controla a força da penalização. Quanto maior a penalização, menor a variância e maior o viés, então a regularização ajuda a evitar overfitting controlando a complexidade do modelo.
 

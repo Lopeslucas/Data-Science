@@ -111,6 +111,16 @@ Já a pós-poda acontece depois que a árvore já foi construída, removendo alg
 
 Essas técnicas ajudam a controlar a complexidade da árvore e melhorar a generalização.
 
+
+## Como árvores de decisão fazem split em variáveis categóricas e variáveis numéricas?
+A árvore de decisão faz os splits avaliando todas as possíveis divisões das variáveis e escolhendo aquela que minimiza a função de custo naquele momento.
+
+Para variáveis numéricas, o split é feito usando um threshold, ou seja, a árvore testa valores do tipo menor ou igual e maior que um determinado valor, e escolhe o corte que gera a melhor separação dos dados, usando métricas como Gini ou Entropia para classificação, ou MSE para regressão.
+
+Já para variáveis categóricas, o split pode ser feito separando grupos de categorias, por exemplo, pertence a um conjunto de categorias ou não pertence. A árvore testa diferentes combinações possíveis e escolhe a divisão que gera maior pureza nos nós.
+
+Na maioria das implementações, como no sklearn, a árvore faz splits binários, então mesmo para variável categórica ela divide em dois grupos. Dependendo do algoritmo, pode ser necessário fazer encoding antes, mas modelos de árvore costumam ser mais flexíveis com variáveis categóricas do que modelos lineares.
+
 # Ensemble 
 ## Por que Random Forest costuma overfitar menos que uma árvore de decisão?
 O Random Forest costuma sofrer menos overfitting porque ele treina várias árvores independentes usando amostras diferentes dos dados, através de bootstrap, e depois faz a predição pela média ou votação.
@@ -186,3 +196,35 @@ No Gradient Boosting, dizer que cada árvore aprende os resíduos significa que 
 A próxima árvore é treinada para aprender esse erro, e a previsão final passa a ser a soma das árvores. Esse processo se repete várias vezes, fazendo com que o modelo vá minimizando a função de custo gradualmente, aprendendo padrões cada vez mais complexos.
 
 Por isso o Gradient Boosting costuma ter alta performance, mas também pode sofrer overfitting se não controlar os hiperparâmetros.
+
+
+## O que é Out-of-Bag no Random Forest e para que ele serve?
+No Random Forest é usada a técnica de bagging, com bootstrap, onde cada árvore é treinada com uma amostra aleatória dos dados com reposição.
+
+Como a amostragem é feita com reposição, alguns dados acabam não sendo selecionados para treinar uma determinada árvore. Esses dados que ficam de fora são chamados de Out-of-Bag.
+
+Em média, cerca de um terço dos dados não é usado no treino de cada árvore, e esses dados podem ser usados para fazer uma validação interna do modelo. Como essas amostras não foram vistas pela árvore, a gente consegue usar elas para estimar o erro de generalização sem precisar de um conjunto de validação separado.
+
+O Out-of-Bag não reduz diretamente o overfitting, mas ajuda a medir se o modelo está generalizando bem, sem precisar usar o conjunto de teste.
+
+
+## Como o Gradient Boosting constrói as árvores sequencialmente e o que significa dizer que ele aprende os resíduos?
+No Gradient Boosting, as árvores são construídas de forma sequencial, diferente do Random Forest, onde as árvores são independentes.
+
+Primeiro o modelo constrói uma árvore inicial, faz a previsão e calcula o erro, que são os resíduos, ou seja, a diferença entre o valor real e o valor previsto. A próxima árvore é treinada para aprender esses resíduos, tentando corrigir os erros da árvore anterior.
+
+Esse processo se repete várias vezes, e a previsão final é a soma das previsões de todas as árvores, o que faz com que o erro vá sendo minimizado gradualmente. O nome Gradient Boosting vem porque essa correção dos erros é feita usando o gradiente da função de custo, ou seja, o modelo vai na direção que mais reduz o erro.
+
+Hiperparâmetros como learning_rate, n_estimators e max_depth são importantes para controlar o overfitting, porque muitas árvores ou árvores muito profundas podem fazer o modelo aprender demais os dados de treino.
+
+
+## Por que Gradient Boosting precisa de learning rate e como ele influencia o overfitting?
+No Gradient Boosting, as árvores são construídas de forma sequencial, onde cada nova árvore vem para corrigir os erros da anterior.
+
+O learning rate controla o quanto cada nova árvore vai corrigir do erro anterior.
+
+Se o learning rate for muito alto, cada árvore corrige uma parte muito grande do erro, o que pode fazer o modelo aprender muito rápido e acabar sofrendo overfitting.
+
+Se o learning rate for menor, a correção é feita de forma mais gradual, então o modelo precisa de mais árvores, mas tende a generalizar melhor.
+
+Por isso existe um trade-off entre learning_rate e n_estimators, onde learning rate menor costuma precisar de mais árvores, mas reduz o risco de overfitting.
