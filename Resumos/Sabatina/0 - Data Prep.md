@@ -38,3 +38,47 @@ A normalização é útil quando queremos manter os valores dentro de um interva
 A padronização é mais usada quando os algoritmos assumem dados centrados, como regressão, SVM e PCA.
 
 Ambas são sensíveis a outliers, mas o MinMax é mais afetado, e nesses casos podemos usar RobustScaler.
+
+
+## Por que OneHotEncoding pode ser um problema em alguns casos?
+OneHotEncoding pode ser um problema quando a variável categórica tem muitas categorias, porque isso aumenta muito a dimensionalidade do dataset, criando muitas colunas.
+
+Isso pode gerar sparsity, aumentar o custo computacional e prejudicar modelos que dependem de distância ou de muitas features.
+
+Além disso, em modelos lineares pode ocorrer multicolinearidade se todas as categorias forem mantidas, por isso normalmente removemos uma coluna ou usamos drop_first.
+
+Em casos com muitas categorias, alternativas como target encoding ou agrupamento de categorias raras podem ser mais adequadas.
+
+Sparsity: 
+- Sparsity (esparsidade) no contexto de One-Hot Encoding significa que a maior parte dos valores da matriz gerada são zeros.
+- Uma matriz esparsa é uma matriz onde a grande maioria dos elementos são zero.
+
+## Quando você NÃO deve usar OneHotEncoding?
+Não devemos usar OneHotEncoding em alguns cenários específicos.
+
+- Primeiro, quando a variável é ordinal, porque o OneHot perde a informação de ordem, sendo melhor usar encoding ordinal.
+- Segundo, quando a variável tem muitas categorias, pois o OneHot aumenta muito a dimensionalidade do dataset, gerando sparsity e maior custo computacional.
+- Também pode ser um problema em modelos lineares por causa da multicolinearidade, e em modelos baseados em distância, onde muitas dimensões podem prejudicar o cálculo da distância.
+
+Nesses casos, alternativas como ordinal encoding, target encoding ou agrupamento de categorias podem ser mais adequadas.
+
+
+## Como tratar dados desbalanceados?
+Existem várias formas de tratar dados desbalanceados.
+
+- Podemos usar oversampling, aumentando a quantidade da classe minoritária, ou undersampling, reduzindo a classe majoritária.
+- Uma técnica comum é o SMOTE, que cria exemplos sintéticos da classe minoritária ao invés de apenas duplicar dados.
+- Também podemos usar class_weight nos modelos, ajustar o threshold de decisão, ou escolher métricas adequadas como recall, F1 ou AUC ao invés de accuracy.
+
+É importante aplicar essas técnicas apenas no conjunto de treino para evitar data leakage.
+
+
+## Por que não devemos fazer scaling antes do train_test_split?
+Não devemos fazer scaling antes do train_test_split porque o scaler calcula estatísticas como média e desvio padrão usando os dados.
+
+Se fizermos isso antes da separação, essas estatísticas serão calculadas usando também os dados de teste, o que gera data leakage.
+
+O correto é fazer o split primeiro, depois ajustar o scaler apenas no treino (fit) e aplicar a transformação no treino e no teste (transform).
+
+Isso garante que o modelo não tenha acesso a informações do conjunto de teste durante o treinamento.
+

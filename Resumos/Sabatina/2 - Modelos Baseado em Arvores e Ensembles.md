@@ -121,6 +121,29 @@ Já para variáveis categóricas, o split pode ser feito separando grupos de cat
 
 Na maioria das implementações, como no sklearn, a árvore faz splits binários, então mesmo para variável categórica ela divide em dois grupos. Dependendo do algoritmo, pode ser necessário fazer encoding antes, mas modelos de árvore costumam ser mais flexíveis com variáveis categóricas do que modelos lineares.
 
+
+## Por que modelos de árvore não precisam de scaling?
+Modelos baseados em árvore não precisam de scaling porque eles não utilizam métricas de distância ou gradientes diretamente sobre as features.
+
+O algoritmo constrói a árvore realizando divisões baseadas em thresholds em cada variável, buscando a divisão que maximiza o ganho de informação ou reduz a impureza (como Gini ou MSE).
+
+Como cada feature é avaliada individualmente, a escala absoluta da variável não influencia a escolha da divisão.
+
+Diferente de modelos baseados em distância, como KNN ou SVM, onde features com escalas maiores podem dominar o cálculo da distância.
+
+
+## Por que árvores tendem a overfitar facilmente?
+Árvores de decisão tendem a overfitar porque o algoritmo constrói a árvore de forma greedy, escolhendo a melhor divisão local em cada passo para reduzir a impureza.
+
+Se não houver restrições, a árvore continua dividindo até que os nós fiquem com poucas amostras, ou até mesmo uma única observação, o que faz com que o modelo capture ruído dos dados de treino.
+
+Isso torna a árvore um modelo de alta variância, pois pequenas mudanças nos dados podem gerar árvores completamente diferentes.
+
+Por isso é necessário controlar a complexidade usando parâmetros como max_depth, min_samples_leaf e min_samples_split.
+
+
+
+---
 # Ensemble 
 ## Por que Random Forest costuma overfitar menos que uma árvore de decisão?
 O Random Forest costuma sofrer menos overfitting porque ele treina várias árvores independentes usando amostras diferentes dos dados, através de bootstrap, e depois faz a predição pela média ou votação.
@@ -228,3 +251,52 @@ Se o learning rate for muito alto, cada árvore corrige uma parte muito grande d
 Se o learning rate for menor, a correção é feita de forma mais gradual, então o modelo precisa de mais árvores, mas tende a generalizar melhor.
 
 Por isso existe um trade-off entre learning_rate e n_estimators, onde learning rate menor costuma precisar de mais árvores, mas reduz o risco de overfitting.
+
+
+## Por que Random Forest reduz overfitting em relação a uma única árvore?
+O Random Forest reduz overfitting porque utiliza Bagging, ou seja, constrói várias árvores em paralelo usando amostragem com reposição (bootstrap) dos dados de treino.
+
+Além disso, em cada divisão da árvore ele usa apenas um subconjunto aleatório das features, o que reduz a correlação entre as árvores.
+
+Como resultado, o modelo final faz uma média das previsões, reduzindo a variância e tornando o modelo mais robusto que uma única árvore, que tende a overfitar facilmente.
+
+O custo disso é maior custo computacional e menor interpretabilidade.
+
+
+## Qual a principal diferença entre Random Forest e Gradient Boosting?
+A principal diferença entre Random Forest e Gradient Boosting está na forma de construção do ensemble.
+
+O Random Forest usa Bagging, onde várias árvores são treinadas de forma independente usando bootstrap dos dados, e o resultado final é a média das previsões. Isso reduz a variância e torna o modelo mais robusto.
+
+Já o Gradient Boosting constrói as árvores de forma sequencial, onde cada nova árvore tenta corrigir o erro da anterior, reduzindo o bias do modelo.
+
+Como consequência, o Random Forest costuma ser mais estável e menos sensível a overfitting, enquanto o Boosting costuma ter melhor performance, mas exige mais tuning e pode overfitar com mais facilidade.
+
+
+## Por que Gradient Boosting pode overfitar mais que Random Forest?
+O Gradient Boosting pode overfitar mais que Random Forest porque ele constrói as árvores de forma sequencial, onde cada nova árvore tenta corrigir o erro da anterior.
+
+Isso faz com que o modelo reduza muito o bias, mas pode aumentar a variância, principalmente se o número de árvores for grande ou se as árvores forem muito profundas.
+
+Além disso, o Boosting tem menos aleatoriedade que o Random Forest, então ele pode se ajustar demais aos dados de treino.
+
+Por isso é importante controlar hiperparâmetros como learning_rate, n_estimators, max_depth e subsample para evitar overfitting.
+
+## Qual a função do learning rate no Gradient Boosting?
+- learning rate alto → risco de overfitting
+- learning rate baixo → modelo mais estável
+
+O learning rate no Gradient Boosting controla o quanto cada árvore contribui para a correção do erro da árvore anterior.
+
+- Learning rate baixo faz com que cada árvore faça pequenas correções, o que torna o modelo mais estável, mas exige um número maior de árvores.
+- Learning rate alto faz com que cada árvore corrija muito do erro anterior, o que pode fazer o modelo convergir mais rápido, mas aumenta o risco de overfitting.
+
+Por isso o learning rate funciona como uma forma de regularização no Gradient Boosting, controlando o trade-off entre bias e variância.
+
+## Por que Random Forest reduz variância mas não reduz muito bias?
+Random Forest reduz variância porque combina várias árvores treinadas com bootstrap e subconjunto de features, e a média das previsões torna o modelo mais estável.
+
+Porém, ele não reduz muito o bias porque cada árvore individual ainda tem a mesma capacidade de modelagem, então o erro sistemático do modelo não muda muito.
+
+O ensemble por bagging reduz principalmente variância, enquanto técnicas como boosting conseguem reduzir bias.
+

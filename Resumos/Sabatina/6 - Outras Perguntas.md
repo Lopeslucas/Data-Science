@@ -63,3 +63,24 @@ Nesse caso, o modelo pode ficar com uma métrica muito boa no teste, mas quando 
 
 O mais correto é separar em treino, validação e teste, onde o treino é usado para ajustar o modelo, a validação para escolher hiperparâmetros, e o teste apenas para a avaliação final.
 
+
+## O que é cross-validation e por que usar?
+Cross-validation é uma técnica de validação onde dividimos os dados em k folds e treinamos o modelo várias vezes, usando cada fold como validação e os outros como treino.
+
+No final, calculamos a média das métricas para ter uma avaliação mais robusta do modelo.
+
+Isso reduz a variância da avaliação e evita que o resultado dependa de uma única divisão de treino e validação.
+
+É muito usada para ajuste de hiperparâmetros e seleção de modelos.
+
+
+## O que acontece se o modelo tiver muito bias?
+E se tiver muita variância?
+- muito bias → underfitting: Modelo simples demais
+- muita variância → overfitting: Modelo muito flexível
+    
+Bias alto acontece quando o modelo é muito simples e não consegue capturar o padrão dos dados, levando a underfitting.
+
+Variância alta acontece quando o modelo é muito complexo e se ajusta demais aos dados de treino, capturando ruído e causando overfitting.
+
+O objetivo é encontrar um equilíbrio entre bias e variância para que o modelo generalize bem.
