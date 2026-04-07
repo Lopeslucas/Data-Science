@@ -300,3 +300,8 @@ Porém, ele não reduz muito o bias porque cada árvore individual ainda tem a m
 
 O ensemble por bagging reduz principalmente variância, enquanto técnicas como boosting conseguem reduzir bias.
 
+
+## Por que Gradient Boosting consegue reduzir bias, enquanto Random Forest reduz mais variância?
+O Gradient Boosting reduz bias porque constrói o modelo de forma sequencial, onde cada nova árvore é treinada para corrigir os erros da anterior, aumentando gradualmente a complexidade do modelo e melhorando o ajuste aos dados.
+
+Já o Random Forest reduz principalmente a variância, pois treina várias árvores independentes em amostras diferentes usando bagging e depois faz a média das previsões. Como as árvores do Random Forest normalmente já têm baixo bias, o ensemble reduz a variância, mas não altera muito o bias.

@@ -123,3 +123,18 @@ Já modelos lineares tendem a ter alto viés porque eles assumem uma relação l
 Isso faz com que ele generalize melhor e tenha menor variância, mas pode cometer mais erro se a relação real dos dados não for linear.
 
 Então existe um trade-off entre viés e variância, onde modelos mais simples têm mais viés e menos variância, e modelos mais complexos têm menos viés e mais variância.
+
+
+## Quando regressão linear pode performar melhor que Random Forest?
+Regressão linear pode performar melhor que Random Forest quando o relacionamento entre as variáveis é aproximadamente linear, quando o dataset é pequeno, ou quando o problema tem baixa complexidade.
+
+Como o Random Forest é um modelo mais flexível, ele pode ter alta variância e overfitar em datasets pequenos, enquanto a regressão linear tem maior bias e pode generalizar melhor nesses casos. Além disso, modelos lineares conseguem extrapolar fora da região observada, enquanto árvores não extrapolam bem.
+
+
+## Por que árvores de decisão não extrapolam bem?
+Extrapolar = prever fora da região dos dados de treino.
+Árvores de decisão não extrapolam bem porque fazem previsões baseadas em divisões do espaço de features e retornam a média dos valores dentro de cada folha. Isso faz com que, para valores fora da região observada no treino, o modelo continue prevendo valores semelhantes aos já vistos, sem seguir uma tendência.
+
+Já modelos lineares aprendem uma função e conseguem extrapolar para valores fora do intervalo do treino.
+
+## 

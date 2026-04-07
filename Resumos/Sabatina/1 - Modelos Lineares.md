@@ -78,6 +78,12 @@ Já a regularização L1 também penaliza, mas pode zerar alguns coeficientes, f
 O nível de penalização é controlado por um hiperparâmetro, geralmente chamado de lambda ou alpha, que define o quanto o modelo vai ser regularizado.
 - Alpha: Define quanto o modelo penaliza coeficientes grandes. A ideia é evitar overfitting, impedindo que os coeficientes cresçam demais para se ajustar perfeitamente aos dados de treino.
 
+## Por que L1 (Lasso) pode zerar coeficientes e L2 (Ridge) não?
+L1 pode zerar coeficientes porque usa penalização absoluta, que cria uma região de solução com cantos nos eixos, fazendo com que alguns coeficientes sejam exatamente zero.
+
+Já o L2 usa penalização quadrática, que apenas reduz os coeficientes, mas dificilmente os leva exatamente a zero.
+
+Por isso o Lasso pode fazer seleção de variáveis, enquanto o Ridge apenas reduz a magnitude dos coeficientes.
 
 ## Qual a diferença entre Ridge e Lasso, e quando você usaria cada um?
 A Ridge utiliza regularização L2, onde é adicionada uma penalização na soma dos coeficientes ao quadrado na função de custo.
@@ -99,4 +105,12 @@ Na regularização L2, a penalização é feita com o quadrado dos coeficientes,
 Já na regularização L1, a penalização é feita com o valor absoluto dos coeficientes, podendo fazer alguns coeficientes ficarem exatamente zero, o que gera seleção de variáveis.
 
 Existe um hiperparâmetro, geralmente chamado lambda ou alpha, que controla a força da penalização. Quanto maior a penalização, menor a variância e maior o viés, então a regularização ajuda a evitar overfitting controlando a complexidade do modelo.
+
+
+## O que é multicolinearidade e por que ela é um problema em modelos lineares?
+Multicolinearidade ocorre quando duas ou mais variáveis explicativas são altamente correlacionadas entre si, ou seja, carregam informação redundante.
+
+Em modelos lineares isso é um problema porque dificulta a estimação dos coeficientes, tornando-os instáveis e sensíveis a pequenas variações nos dados. Isso aumenta a variância do modelo e prejudica a interpretabilidade, pois fica difícil separar o efeito individual de cada variável.
+
+Técnicas como regularização L1 e L2 ajudam a reduzir esse problema, penalizando os coeficientes e estabilizando o modelo.
 

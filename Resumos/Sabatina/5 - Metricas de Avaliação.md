@@ -22,7 +22,7 @@ Recall, taxa de negativos corretos, exemplo, falar que uma pessoa não tem cance
 f1 score: equilibra precisão e recall
 
 ## O que é AUC e o que significa um AUC alto?
-AUC é a área sob a curva ROC e mede a capacidade do modelo de separar as classes.A curva ROC compara a taxa de verdadeiros positivos com a taxa de falsos positivos para diferentes thresholds.
+AUC é a área sob a curva ROC e mede a capacidade do modelo de separar as classes. A curva ROC compara a taxa de verdadeiros positivos com a taxa de falsos positivos para diferentes thresholds.
 
 Um AUC alto significa que o modelo consegue diferenciar bem as classes, ou seja, ele tende a dar scores maiores para exemplos positivos do que para negativos.
 
@@ -75,3 +75,41 @@ Como usa média harmônica, o F1-score só será alto se precision e recall fore
 Accuracy mede a proporção total de acertos, mas em datasets desbalanceados ela pode ser enganosa. Por exemplo, se 99% dos dados são da classe 0, um modelo que sempre prevê 0 terá 99% de accuracy, mesmo sem identificar nenhum caso da classe minoritária.
 
 Nesses casos, métricas como precision, recall, F1 ou AUC são mais adequadas, porque avaliam melhor o desempenho na classe de interesse.
+
+
+# Explique:
+1.	O que é AUC
+2.	O que é curva ROC
+3.	O que significa um AUC alto
+4.	Por que AUC é melhor que accuracy em problemas desbalanceados
+5.	O que é Gini e qual a relação com AUC
+
+A AUC é uma métrica usada em problemas de classificação para avaliar a capacidade do modelo de separar as classes.
+Ela vem da curva ROC, que mostra a relação entre a taxa de verdadeiros positivos e a taxa de falsos positivos para diferentes thresholds.
+
+A curva ROC é construída variando o threshold do modelo, e para cada valor calculamos o TPR, que é o recall, e o FPR, que é a taxa de falsos positivos.
+
+A AUC é a área embaixo da curva ROC, e ela mede o quanto o modelo consegue distinguir as duas classes.
+Quanto mais perto de 1, melhor o modelo está separando as classes.
+Um AUC de 0.5 significa que o modelo é aleatório, e um AUC igual a 1 significa que ele separa perfeitamente.
+
+A AUC é melhor que accuracy em problemas desbalanceados porque a accuracy pode ser alta mesmo quando o modelo não aprende nada.
+Por exemplo, se eu tenho 95% de não fraude e 5% de fraude, um modelo que sempre prevê não fraude vai ter 95% de accuracy, mas não serve para nada.
+A AUC não depende de um threshold fixo, então ela avalia o modelo de forma mais geral.
+
+O Gini é uma transformação da AUC, muito usada em crédito.
+A relação é:
+
+Gini = 2 × AUC − 1
+
+
+## Por que AUC é independente de threshold e acurácia não é?
+A acurácia depende de threshold porque é calculada a partir das classes previstas, que são definidas usando um limite de probabilidade, normalmente 0.5.
+
+Já a AUC é independente de threshold porque avalia o desempenho do modelo considerando todos os possíveis valores de threshold através da curva ROC, medindo a capacidade do modelo de separar as classes independentemente do ponto de corte.
+
+
+## Quando KS pode ser mais útil que AUC?
+KS pode ser mais útil que AUC quando precisamos avaliar a capacidade do modelo de separar as classes e escolher um ponto de corte para decisão.
+
+Enquanto a AUC mede o desempenho geral do modelo em todos os thresholds, o KS mostra a maior distância entre as distribuições das classes, sendo muito utilizado em modelos de score de crédito para definir o cutoff ideal.

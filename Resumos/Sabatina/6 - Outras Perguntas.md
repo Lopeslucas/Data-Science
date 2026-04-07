@@ -84,3 +84,9 @@ Bias alto acontece quando o modelo é muito simples e não consegue capturar o p
 Variância alta acontece quando o modelo é muito complexo e se ajusta demais aos dados de treino, capturando ruído e causando overfitting.
 
 O objetivo é encontrar um equilíbrio entre bias e variância para que o modelo generalize bem.
+
+
+## Qual a diferença entre overfitting causado por alta variância e overfitting causado por data leakage?
+Overfitting por alta variância ocorre quando o modelo é muito complexo e acaba aprendendo não apenas os padrões reais, mas também o ruído dos dados, perdendo capacidade de generalização.
+
+Já o overfitting causado por data leakage não está relacionado à complexidade do modelo, mas sim a um erro no processo de treinamento, onde informações que não deveriam estar disponíveis acabam vazando para o treino, fazendo com que o modelo tenha um desempenho artificialmente alto.
