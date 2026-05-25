@@ -36,7 +36,12 @@ A escolha do gráfico depende tanto do tipo de variável quanto do objetivo da a
 Então, a escolha do gráfico sempre depende do objetivo da análise, como entender distribuição, detectar outliers ou analisar relações entre variáveis.
 
 ## Como você trata missing values?
-O tratamento de missing values começa entendendo o tipo de ausência, se é completamente aleatória (MCAR), dependente de outras variáveis (MAR) ou não aleatória (MNAR), que é o mais crítico. Em seguida, eu avalio o impacto da ausência e a quantidade de dados faltantes.
+O tratamento de missing values começa entendendo o tipo de ausência
+- se é completamente aleatória (MCAR)
+- dependente de outras variáveis (MAR) 
+- ou não aleatória (MNAR), que é o mais crítico. 
+
+Em seguida, eu avalio o impacto da ausência e a quantidade de dados faltantes.
 
 Para variáveis numéricas, geralmente utilizo mediana por ser mais robusta a outliers, e para categóricas utilizo moda ou crio uma categoria como “unknown”. Também posso remover linhas ou colunas dependendo do volume de missing.
 
