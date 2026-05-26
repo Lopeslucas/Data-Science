@@ -28,6 +28,19 @@ Os métodos baseados em árvores envolvem a estratificação ou segmentação do
 - Risco de Overfitting (Boosting): Diferente do Bagging e Random Forests, o Boosting pode sofrer sobreajuste se o número de árvores for excessivamente grande, exigindo ajuste cuidadoso.
 
 ---
+# Pontos cobertos pelo questionario abaixo:
+Árvores
+- Como funciona o Threshold de escolha do melhor corte + no raiz, da arvore de decisão ✅
+- Como funciona o corte de Threhold em variaveis categoricas e numericas ✅
+- Sensibilidade das arvores a sofrerem com overfiting e como Random Forrest lida ✅
+- Como é medido o corte das arvores, com metricas de Gini e Entropia ✅
+- Tecnicas de Pre e Pos Poda ✅
+- 
+
+
+
+
+---
 # Árvores 
 
 ## Como a árvore de decisão escolhe o melhor split? (critério de divisão)

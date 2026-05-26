@@ -5,21 +5,39 @@ O conceito dos métodos lineares, como a regressão linear simples e múltipla, 
 Premissas Fundamentais
 Para que os modelos lineares sejam válidos e eficazes, assume-se que:
 - Linearidade: A relação entre os preditores e a resposta é retilínea, o que significa que a mudança na resposta por unidade de variação no preditor é constante.
-- Aditividade: O efeito de um preditor na resposta é independente dos valores dos outros preditores no modelo.
-- Independência e Média Zero dos Erros: Os termos de erro são independentes entre si e, em média, somam zero.
 - Homocedasticidade: Os termos de erro possuem uma variância constante, não variando sistematicamente com os valores dos preditores ou da resposta.
+- Baixa Multicolinearidade
 
 Vantagens
 - Interpretabilidade: São modelos extremamente fáceis de explicar e entender, permitindo identificar claramente quais variáveis estão associadas à resposta e a força dessa associação.
-- Ferramentas de Inferência: Oferecem uma base sólida para testes de hipóteses, permitindo o cálculo de erros padrão, intervalos de confiança e p-values para validar as descobertas.
 - Eficiência e Simplicidade: São computacionalmente baratos para ajustar e servem como um excelente ponto de partida antes de tentar métodos mais complexos.
-- Competitividade: Em muitos problemas do mundo real, a aproximação linear é surpreendentemente competitiva em relação a métodos não lineares sofisticados.
+- Competitividade: 
+    - Baixo custo computacional
+    - Rapido
+    - Funciona bem com poucos dados
 
 Desvantagens
 - Rigidez (Alto Viés): A suposição de linearidade é frequentemente uma simplificação excessiva da realidade; se a relação real for complexa ou curva, o modelo terá um viés alto e baixa precisão,.
 - Problemas em Alta Dimensionalidade: Quando o número de preditores (p) é grande em relação ao número de observações (n), o modelo pode sofrer de overfitting (sobreajuste); se p>n, o método de mínimos quadrados nem sequer possui uma solução única.
 - Sensibilidade a Dados Atípicos: O ajuste pode ser drasticamente distorcido por outliers (valores incomuns na resposta) ou pontos de alta alavancagem (valores incomuns nos preditores).
-- Colinearidade: Quando os preditores são altamente correlacionados entre si, torna-se difícil separar os efeitos individuais de cada variável, aumentando a incerteza das estimativas.
+- MultiColinearidade: Quando os preditores são altamente correlacionados entre si, torna-se difícil separar os efeitos individuais de cada variável, aumentando a incerteza das estimativas.
+
+Como lidar com as desvantagens
+- Tecnicas de regularização
+- Transformação Log
+- Remoção de Outliers
+
+
+---
+# Pontos cobertos pelo questionario abaixo:
+- Premissas da Regressão Linear ✅
+- Diferenças entre Regressão Linear x Regressão Logistica ✅
+- Por que modelos Lineares precisam de Normalização dos Dados ✅
+- Tecnicas de Regularização: Lasso (L1), Ridge (L2) e Elastic Net ✅
+- Transformação Logarítmica
+- Multicolinearidade 
+- Calculo de VIF
+- Como identificar Homocesticidade/ Heterocedasticidade 
 
 ---
 # Perguntas e respostas:
@@ -32,6 +50,35 @@ A regressão linear assume algumas premissas importantes.
 4. Normalidade dos resíduos, que é importante principalmente para inferência estatística.
 5. Ausência de multicolinearidade forte entre as variáveis explicativas, pois isso pode tornar os coeficientes instáveis.
 6. Quando essas premissas são violadas, podemos ter problemas como coeficientes não confiáveis, pior generalização ou inferências incorretas.
+
+## O que é Heterocedasticidade x Homocedasticidade?
+Esses conceitos estão relacionados ao comportamento dos resíduos (erros) do modelo. Homocedasticidade significa que os resíduos possuem variância constante ao longo das predições do modelo, enquanto heterocedasticidade ocorre quando essa variância muda. 
+
+Em regressão linear isso impacta principalmente a inferência estatística, porque os erros padrão, p-values e intervalos de confiança passam a ficar incorretos. O modelo ainda pode prever bem, mas a interpretação estatística dos coeficientes fica comprometida.
+
+Homocedasticidade
+- A homocedasticidade acontece quando os resíduos possuem variância constante ao longo das predições.
+- O erro do modelo permanece relativamente estável;
+- A dispersão dos resíduos não aumenta nem diminui conforme o valor previsto muda.
+
+Heterocedasticidade
+- A heterocedasticidade acontece quando a variância dos resíduos muda ao longo das predições.
+- Para valores baixos o erro é pequeno;
+- Para valores altos o erro cresce muito.
+
+Como podemos detectar:
+- Plot de Residuos x Valores preditos. Se formar cone, funil ou aumento gradual da dispersão há indicios de heterocedasticidade
+
+Como tratar:
+- Transformação Log
+- Remoção de outliers
+
+![Gráfico](img/RL_Homocedasticidade.png)
+
+## Tranformação Log.
+
+
+![Gráfico](img/RL_Tranform_log.png)
 
 
 ## Qual a diferença entre regressão linear e regressão logística, e por que não podemos usar regressão linear para classificação?
@@ -94,6 +141,8 @@ A Ridge é muito usada quando temos multicolinearidade, porque ela estabiliza os
 Já a Lasso usa regularização L1, onde a penalização é feita com o valor absoluto dos coeficientes.
 Isso faz com que alguns coeficientes sejam reduzidos até zero, fazendo seleção automática de variáveis.
 
+Embora a Lasso faça seleção automática de variáveis, a Ridge costuma lidar melhor com multicolinearidade porque ela reduz a variância dos coeficientes sem eliminar completamente variáveis correlacionadas. Em cenários onde várias features carregam sinal parecido, a Ridge tende a distribuir os pesos de forma mais estável, enquanto a Lasso pode escolher uma variável arbitrariamente e descartar outras correlacionadas.
+
 As duas técnicas usam um hiperparâmetro, geralmente chamado de lambda ou alpha, que controla a força da penalização. Quanto maior a penalização, menor a variância, mas maior o viés, então existe um trade-off entre overfitting e underfitting.
 
 
@@ -113,4 +162,5 @@ Multicolinearidade ocorre quando duas ou mais variáveis explicativas são altam
 Em modelos lineares isso é um problema porque dificulta a estimação dos coeficientes, tornando-os instáveis e sensíveis a pequenas variações nos dados. Isso aumenta a variância do modelo e prejudica a interpretabilidade, pois fica difícil separar o efeito individual de cada variável.
 
 Técnicas como regularização L1 e L2 ajudam a reduzir esse problema, penalizando os coeficientes e estabilizando o modelo.
+
 
