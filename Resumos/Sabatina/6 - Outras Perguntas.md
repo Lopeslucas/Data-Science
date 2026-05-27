@@ -1,5 +1,20 @@
 # Outras Perguntas
 
+---
+# Pontos cobertos pelo questionario abaixo:
+- Relação Overfiting x Underfiting ✅
+- O que é Data Leakage ✅
+- Overfiting por alta variancia ✅
+- Validação Holdout e Cruzada ✅
+- Problemas causadas pela Multicolinearidade ✅
+- Como identificar Multicolinearidade ✅
+- O que são Hiperparametros e como ajustar ✅
+- Correlação x Causalidade ✅
+- Maldição da Multidimensionalidade ✅
+
+
+---
+
 ## Overfitting x Underfitting
 Overfitting ocorre quando o modelo se ajusta excessivamente aos dados de treino, aprendendo inclusive o ruído, o que resulta em baixa capacidade de generalização e pior desempenho no conjunto de teste.
 
@@ -118,3 +133,27 @@ O objetivo é encontrar um equilíbrio entre bias e variância para que o modelo
 Overfitting por alta variância ocorre quando o modelo é muito complexo e acaba aprendendo não apenas os padrões reais, mas também o ruído dos dados, perdendo capacidade de generalização.
 
 Já o overfitting causado por data leakage não está relacionado à complexidade do modelo, mas sim a um erro no processo de treinamento, onde informações que não deveriam estar disponíveis acabam vazando para o treino, fazendo com que o modelo tenha um desempenho artificialmente alto.
+
+## Você pode explicar a diferença entre correlação e causalidade?
+- Correlação significa que duas variáveis apresentam algum tipo de associação estatística, ou seja, elas variam juntas de alguma forma.
+- Causalidade significa que uma variável realmente influencia ou provoca mudança na outra, ou seja existe relação de causa e efeito.
+
+Correlação NÃO implica causalidade. Duas variáveis podem estar correlacionadas sem que uma cause a outra.
+
+Correlação significa associação estatística entre variáveis, enquanto causalidade implica relação de causa e efeito. Duas variáveis podem ser correlacionadas sem que uma cause a outra, muitas vezes por influência de uma variável confundidora. Modelos de Machine Learning normalmente aprendem correlações nos dados, não causalidade.
+
+## Qual é a maldição da dimensionalidade e como evitá-la?
+A maldição da dimensionalidade acontece quando o número de features cresce muito, fazendo com que os dados fiquem esparsos no espaço dimensional. Isso dificulta encontrar padrões, aumenta overfitting e prejudica modelos baseados em distância. Para reduzir esse problema podemos usar feature selection, PCA, regularização e aumentar a quantidade de dados.
+
+A maldição da dimensionalidade (Curse of Dimensionality) é um problema que acontece quando aumentamos muito o número de features (dimensões) de um dataset.
+
+Conforme a dimensionalidade cresce:
+- os dados ficam cada vez mais esparsos;
+- aumenta a dificuldade de encontrar padrões reais;
+- modelos começam a sofrer mais com overfitting;
+- métricas de distância perdem eficiência;
+- o custo computacional aumenta.
+
+## Como você lida com a multicolinearidade em seus dados?
+Eu normalmente identifico multicolinearidade usando matriz de correlação e VIF. Quando ela é alta, os coeficientes dos modelos lineares ficam instáveis e difíceis de interpretar. Para tratar isso, posso remover variáveis redundantes, criar novas features, usar regularização como Ridge ou Lasso, ou aplicar PCA quando existem muitas variáveis correlacionadas. Em modelos de árvore o impacto costuma ser menor, mas em regressões é um problema importante.
+
