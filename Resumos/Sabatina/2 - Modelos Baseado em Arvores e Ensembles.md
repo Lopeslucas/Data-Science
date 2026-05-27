@@ -35,10 +35,16 @@ Os métodos baseados em árvores envolvem a estratificação ou segmentação do
 - Sensibilidade das arvores a sofrerem com overfiting e como Random Forrest lida ✅
 - Como é medido o corte das arvores, com metricas de Gini e Entropia ✅
 - Tecnicas de Pre e Pos Poda ✅
-- 
+    - Ajuste de Hiperparametros ✅
 
-
-
+Ensemble (Random Forrest + Tecnica de Bagging x Boosting)
+- Como funciona a contrução do Random Forrest com tecnica de Bagging ✅
+- Como Random Forrest lida com o Overfiting ✅
+- O que é o OOB (Out Of Bag) ✅
+- O que é o Learning Rate no Boosting ✅
+- Quais as principais diferenças entre Bagging x Boosting ✅
+- Por que o Boosting é sensivel ao Overfiting ✅
+- Relação Vies Variancia nos modelos Ensemble ✅
 
 ---
 # Árvores 

@@ -27,17 +27,19 @@ Como lidar com as desvantagens
 - Transformação Log
 - Remoção de Outliers
 
+![Gráfico](img/Regressao_linear.png)
 
 ---
 # Pontos cobertos pelo questionario abaixo:
 - Premissas da Regressão Linear ✅
+- Como identificar Homocedasticidade/ Heterocedasticidade ✅
+- Transformação Logarítmica ✅
 - Diferenças entre Regressão Linear x Regressão Logistica ✅
-- Por que modelos Lineares precisam de Normalização dos Dados ✅
+- Multicolinearidade ✅
+- Calculo de VIF ✅
 - Tecnicas de Regularização: Lasso (L1), Ridge (L2) e Elastic Net ✅
-- Transformação Logarítmica
-- Multicolinearidade 
-- Calculo de VIF
-- Como identificar Homocesticidade/ Heterocedasticidade 
+- Por que modelos Lineares precisam de Normalização dos Dados ✅
+
 
 ---
 # Perguntas e respostas:
@@ -75,8 +77,23 @@ Como tratar:
 
 ![Gráfico](img/RL_Homocedasticidade.png)
 
-## Tranformação Log.
+## Tranformação Logaritmica.
+A transformação logarítmica é usada para comprimir valores muito altos, reduzir assimetria e estabilizar a variância dos dados. Ela transforma relações multiplicativas em relações mais lineares, ajudando a reduzir heterocedasticidade e aproximar a distribuição de uma normal. É muito usada em variáveis com cauda longa, como renda, faturamento e preços
 
+A ideia intuitiva é:
+- diferenças absolutas grandes passam a virar diferenças relativas;
+- valores extremos perdem impacto;
+- distribuições muito assimétricas ficam mais próximas de uma normal.
+
+Quando NÃO usar log?
+- dados já simétricos;
+- presença forte de negativos;
+- quando interpretabilidade linear é importante;
+- modelos de árvore normalmente precisam menos disso.
+
+Impacto na interpretação do Modelo:
+- Sem log: Aumento unitário é linear
+- Com Log: Interpretação vira percentual/ aproximadamente multiplicativa. Um aumento no coeficiente passa a representar mudança percentual aproximada.
 
 ![Gráfico](img/RL_Tranform_log.png)
 
@@ -90,17 +107,32 @@ Não usamos regressão linear para classificação porque ela pode prever valore
 
 A regressão logística utiliza máxima verossimilhança e log loss, o que torna o modelo mais adequado para estimar probabilidades e tomar decisões de classificação.
 
+## O que é multicolinearidade e por que ela é um problema em modelos lineares?
+Multicolinearidade ocorre quando duas ou mais variáveis explicativas são altamente correlacionadas entre si, ou seja, carregam informação redundante.
 
-## Por que modelos lineares precisam de normalização, mas árvores normalmente não precisam?
-Modelos lineares precisam de normalização porque eles são sensíveis à escala das variáveis.
+Em modelos lineares isso é um problema porque dificulta a estimação dos coeficientes, tornando-os instáveis e sensíveis a pequenas variações nos dados. Isso aumenta a variância do modelo e prejudica a interpretabilidade, pois fica difícil separar o efeito individual de cada variável.
 
-Quando as variáveis têm magnitudes muito diferentes, como salário e idade, por exemplo, o modelo pode acabar dando mais peso para a variável com valores maiores, porque os coeficientes são calculados levando em conta essa escala.
+Técnicas como regularização L1 e L2 ajudam a reduzir esse problema, penalizando os coeficientes e estabilizando o modelo.
 
-Além disso, métodos de otimização e regularização, como L1 e L2, também são influenciados pela escala, então a padronização ou normalização ajuda o modelo a convergir melhor e evita distorções.
+![Gráfico](img/RL_multicolinearidade.png)
 
-Já as árvores de decisão não precisam de normalização porque elas não fazem cálculo baseado em distância ou coeficiente, elas apenas testam divisões usando thresholds, como maior ou menor que um valor.
 
-Como a divisão é feita por comparação, a escala da variável não influencia o resultado, então árvores conseguem lidar bem com variáveis em escalas diferentes.
+## Como validar multicolinearidade com calculo de VIF?
+O VIF é uma métrica usada para detectar multicolinearidade entre variáveis explicativas em modelos lineares. Ele mede o quanto a variância de um coeficiente está sendo “inflada” por causa da correlação entre preditores.
+
+O VIF é uma métrica usada para medir multicolinearidade entre variáveis explicativas. Ele avalia o quanto a variância de um coeficiente está inflada devido à correlação com outras features. Valores altos de VIF indicam que a variável pode ser fortemente explicada pelas demais, tornando os coeficientes instáveis e prejudicando principalmente a interpretação estatística do modelo.
+
+Como Tratar variaveis correlacionadas:
+- Remoção de uma das variaveis com alta correlação
+- Criar uma feature unica: Combinando features muito correlacionadas
+- Utilizar tecnica de PCA
+
+Limitação importante do VIF
+- funciona principalmente para modelos lineares;
+- avalia relação linear entre features;
+- não captura relações não lineares complexas.
+
+![Gráfico](img/RL_VIF.png)
 
 
 ## Lasso x Ridge
@@ -156,11 +188,13 @@ Já na regularização L1, a penalização é feita com o valor absoluto dos coe
 Existe um hiperparâmetro, geralmente chamado lambda ou alpha, que controla a força da penalização. Quanto maior a penalização, menor a variância e maior o viés, então a regularização ajuda a evitar overfitting controlando a complexidade do modelo.
 
 
-## O que é multicolinearidade e por que ela é um problema em modelos lineares?
-Multicolinearidade ocorre quando duas ou mais variáveis explicativas são altamente correlacionadas entre si, ou seja, carregam informação redundante.
+## Por que modelos lineares precisam de normalização, mas árvores normalmente não precisam?
+Modelos lineares precisam de normalização porque eles são sensíveis à escala das variáveis.
 
-Em modelos lineares isso é um problema porque dificulta a estimação dos coeficientes, tornando-os instáveis e sensíveis a pequenas variações nos dados. Isso aumenta a variância do modelo e prejudica a interpretabilidade, pois fica difícil separar o efeito individual de cada variável.
+Quando as variáveis têm magnitudes muito diferentes, como salário e idade, por exemplo, o modelo pode acabar dando mais peso para a variável com valores maiores, porque os coeficientes são calculados levando em conta essa escala.
 
-Técnicas como regularização L1 e L2 ajudam a reduzir esse problema, penalizando os coeficientes e estabilizando o modelo.
+Além disso, métodos de otimização e regularização, como L1 e L2, também são influenciados pela escala, então a padronização ou normalização ajuda o modelo a convergir melhor e evita distorções.
 
+Já as árvores de decisão não precisam de normalização porque elas não fazem cálculo baseado em distância ou coeficiente, elas apenas testam divisões usando thresholds, como maior ou menor que um valor.
 
+Como a divisão é feita por comparação, a escala da variável não influencia o resultado, então árvores conseguem lidar bem com variáveis em escalas diferentes.

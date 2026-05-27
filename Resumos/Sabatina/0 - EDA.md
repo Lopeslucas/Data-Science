@@ -1,5 +1,15 @@
 # EDA
 
+---
+# Pontos cobertos pelo questionario abaixo:
+- Oque é um outlier ✅
+- Tipos de gráficos x tipo de variavel ✅
+- Tipos de ˜Missings˜ (MCAR, MAR e MNAR) ✅
+- Medidas de Centralidade ✅
+- Distribuição Assimetrica ✅
+- Analise de variaveis Categoricas e Numericas ✅
+
+---
 ## Explique como você começa um EDA do zero em uma base nova.
 No início do EDA eu faço o entendimento do dataset, olhando colunas, tipos (numéricas, categóricas, datas), quantidade de linhas e identificando o target e a granularidade dos dados.
 
