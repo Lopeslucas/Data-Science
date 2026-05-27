@@ -49,6 +49,9 @@ Ensemble (Random Forrest + Tecnica de Bagging x Boosting)
 ---
 # Árvores 
 
+![Gráfico](img/Tree-Slide_1.png)
+
+
 ## Como a árvore de decisão escolhe o melhor split? (critério de divisão)
 A árvore de decisão escolhe o melhor split avaliando todas as possíveis divisões das variáveis e selecionando aquela que maximiza a separação dos dados naquele nó.
 
@@ -164,6 +167,11 @@ Por isso é necessário controlar a complexidade usando parâmetros como max_dep
 
 ---
 # Ensemble 
+
+![Gráfico](img/Bagging-Slide_2.png)
+
+![Gráfico](img/Boosting-Slide_3.png)
+
 ## Por que Random Forest costuma overfitar menos que uma árvore de decisão?
 O Random Forest costuma sofrer menos overfitting porque ele treina várias árvores independentes usando amostras diferentes dos dados, através de bootstrap, e depois faz a predição pela média ou votação.
 
@@ -194,6 +202,17 @@ A gente pode usar esses dados que ficaram de fora para avaliar o desempenho da �
 - Bootstrap → cada árvore vê dados diferentes
 - Dados que ficaram fora → OOB
 - Usa OOB → como se fosse teste
+
+![Gráfico](img/OOB-Slide_4.png)
+
+## O que é Out-of-Bag no Random Forest e para que ele serve?
+No Random Forest é usada a técnica de bagging, com bootstrap, onde cada árvore é treinada com uma amostra aleatória dos dados com reposição.
+
+Como a amostragem é feita com reposição, alguns dados acabam não sendo selecionados para treinar uma determinada árvore. Esses dados que ficam de fora são chamados de Out-of-Bag.
+
+Em média, cerca de um terço dos dados não é usado no treino de cada árvore, e esses dados podem ser usados para fazer uma validação interna do modelo. Como essas amostras não foram vistas pela árvore, a gente consegue usar elas para estimar o erro de generalização sem precisar de um conjunto de validação separado.
+
+O Out-of-Bag não reduz diretamente o overfitting, mas ajuda a medir se o modelo está generalizando bem, sem precisar usar o conjunto de teste.
 
 
 ## O que é learning rate no Gradient Boosting e o que acontece se ele for muito alto ou muito baixo?
@@ -239,15 +258,6 @@ A próxima árvore é treinada para aprender esse erro, e a previsão final pass
 
 Por isso o Gradient Boosting costuma ter alta performance, mas também pode sofrer overfitting se não controlar os hiperparâmetros.
 
-
-## O que é Out-of-Bag no Random Forest e para que ele serve?
-No Random Forest é usada a técnica de bagging, com bootstrap, onde cada árvore é treinada com uma amostra aleatória dos dados com reposição.
-
-Como a amostragem é feita com reposição, alguns dados acabam não sendo selecionados para treinar uma determinada árvore. Esses dados que ficam de fora são chamados de Out-of-Bag.
-
-Em média, cerca de um terço dos dados não é usado no treino de cada árvore, e esses dados podem ser usados para fazer uma validação interna do modelo. Como essas amostras não foram vistas pela árvore, a gente consegue usar elas para estimar o erro de generalização sem precisar de um conjunto de validação separado.
-
-O Out-of-Bag não reduz diretamente o overfitting, mas ajuda a medir se o modelo está generalizando bem, sem precisar usar o conjunto de teste.
 
 
 ## Como o Gradient Boosting constrói as árvores sequencialmente e o que significa dizer que ele aprende os resíduos?
@@ -324,3 +334,5 @@ O ensemble por bagging reduz principalmente variância, enquanto técnicas como 
 O Gradient Boosting reduz bias porque constrói o modelo de forma sequencial, onde cada nova árvore é treinada para corrigir os erros da anterior, aumentando gradualmente a complexidade do modelo e melhorando o ajuste aos dados.
 
 Já o Random Forest reduz principalmente a variância, pois treina várias árvores independentes em amostras diferentes usando bagging e depois faz a média das previsões. Como as árvores do Random Forest normalmente já têm baixo bias, o ensemble reduz a variância, mas não altera muito o bias.
+
+![Gráfico](img/Vies_variancia-Slide_5.png)
