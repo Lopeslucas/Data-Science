@@ -113,3 +113,28 @@ Já a AUC é independente de threshold porque avalia o desempenho do modelo cons
 KS pode ser mais útil que AUC quando precisamos avaliar a capacidade do modelo de separar as classes e escolher um ponto de corte para decisão.
 
 Enquanto a AUC mede o desempenho geral do modelo em todos os thresholds, o KS mostra a maior distância entre as distribuições das classes, sendo muito utilizado em modelos de score de crédito para definir o cutoff ideal.
+
+## Em um modelo de detecção de fraude, quando você priorizaria recall e qual seria a consequência dessa escolha?
+Quando priorizar: quando deixar uma fraude passar — falso negativo — custa mais do que investigar uma transação legítima.
+Consequência: para aumentar o recall, geralmente reduzimos o threshold. Assim, capturamos mais fraudes, mas também aumentamos os falsos positivos e, frequentemente, reduzimos a precision.
+
+Eu priorizaria recall quando o custo de não detectar uma fraude for muito alto. Assim, busco capturar a maior proporção possível das fraudes reais. A consequência é que, normalmente, teremos mais falsos positivos, podendo bloquear transações legítimas e aumentar o custo de análise. Por isso, o threshold deve ser definido considerando o custo financeiro dos dois tipos de erro
+
+## Se diminuirmos o threshold de classificação de 0,5 para 0,3, o que tende a acontecer com recall e precision? Por quê?
+Recall aumenta: mais positivos reais são capturados e temos menos falsos negativos.
+Precision tende a diminuir: junto com os novos positivos verdadeiros, entram mais falsos positivos.
+
+Exemplo: uma transação com probabilidade de fraude de 0,4 seria considerada legítima com threshold 0,5, mas fraude com threshold 0,3.
+Threshold menor → mais positivos previstos → recall maior e precision menor.
+
+## Em detecção de câncer, o que representa um falso negativo e por que normalmente queremos minimizá-lo?
+Um falso negativo ocorre quando um paciente doente é classificado como saudável. Em um exame de triagem, normalmente buscamos minimizá-lo porque ele pode atrasar o diagnóstico e o tratamento. Isso significa priorizar recall ou sensibilidade, embora o threshold deva considerar também os danos provocados pelos falsos positivos
+
+## Em qual situação bancária você priorizaria precision em vez de recall? Explique usando falsos positivos.
+Em um banco, priorizaríamos precision quando o custo de um falso positivo for muito alto.
+Exemplo: um modelo que bloqueia automaticamente contas por suspeita de fraude.
+- Positivo previsto: conta considerada fraudulenta.
+- Falso positivo: conta legítima classificada como fraudulenta.
+- Consequência: bloqueio indevido, cliente sem acesso ao dinheiro, reclamações e dano reputacional.
+
+Eu priorizaria precision quando uma previsão positiva provocar uma ação severa, como o bloqueio automático de uma conta. Uma precision baixa geraria muitos falsos positivos, bloqueando clientes legítimos. Portanto, eu exigiria maior confiança antes de tomar essa ação.

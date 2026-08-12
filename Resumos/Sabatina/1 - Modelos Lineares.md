@@ -77,6 +77,29 @@ Como tratar:
 
 ![Gráfico](img/RL_Homocedasticidade.png)
 
+## Como você identificaria heterocedasticidade em uma regressão linear?
+- heterocedasticidade ocorre quando a variância dos resíduos não é constante;
+- o gráfico de resíduos versus valores preditos é uma ferramenta adequada;
+- formatos de funil ou cone são indícios clássicos.
+
+Eu analisaria o gráfico de resíduos versus valores ajustados. Uma dispersão aproximadamente constante e aleatória ao redor de zero sugere homocedasticidade; padrões de funil sugerem heterocedasticidade. 
+
+## Se houver heterocedasticidade, o que ela prejudica no modelo e como você tentaria tratá-la?
+- erros-padrão incorretos;
+- intervalos de confiança e testes de hipótese pouco confiáveis;
+- estimadores menos eficientes;
+- possível indicação de especificação inadequada do modelo.
+
+Possíveis tratamentos:
+- transformação logarítmica da resposta ou de preditores;
+- erros-padrão robustos à heterocedasticidade;
+- mínimos quadrados ponderados, quando conseguimos modelar a variância;
+- inclusão de variáveis, interações ou termos não lineares omitidos;
+- revisão de segmentos com comportamentos diferentes;
+- investigação de outliers e erros de dados.
+
+A heterocedasticidade compromete principalmente os erros-padrão e, consequentemente, os testes e intervalos de confiança. Eu investigaria a especificação do modelo, avaliaria uma transformação log, utilizaria erros-padrão robustos ou mínimos quadrados ponderados. Outliers seriam removidos apenas com justificativa
+
 ## Tranformação Logaritmica.
 A transformação logarítmica é usada para comprimir valores muito altos, reduzir assimetria e estabilizar a variância dos dados. Ela transforma relações multiplicativas em relações mais lineares, ajudando a reduzir heterocedasticidade e aproximar a distribuição de uma normal. É muito usada em variáveis com cauda longa, como renda, faturamento e preços
 
@@ -97,6 +120,13 @@ Impacto na interpretação do Modelo:
 
 ![Gráfico](img/RL_Tranform_log.png)
 
+## Por que aplicar log na variável-alvo pode reduzir a heterocedasticidade?
+A transformação logarítmica comprime valores altos mais intensamente do que valores baixos. Ela pode ajudar quando a dispersão dos erros cresce junto com o nível da variável-alvo. Exemplo: se o erro na previsão de salários baixos é pequeno, mas aumenta muito para salários altos, aplicar \(\log(y)\) reduz essa diferença de escala e pode estabilizar a variância dos resíduos.
+Ela costuma ser útil quando:
+- a variável-alvo é positiva e assimétrica à direita;
+- os erros parecem multiplicativos ou proporcionais;
+- a variância cresce conforme aumenta o valor esperado de \(y\).
+Porém, o log não resolve toda heterocedasticidade. É necessário verificar novamente os resíduos depois da transformação. O log comprime os valores altos da variável-alvo e pode estabilizar a variância quando a magnitude dos erros cresce proporcionalmente ao valor de \(y\). Depois da transformação, eu repetiria o diagnóstico dos resíduos para verificar se houve melhora
 
 ## Qual a diferença entre regressão linear e regressão logística, e por que não podemos usar regressão linear para classificação?
 A regressão linear modela uma relação linear entre as variáveis independentes e a variável alvo, estimando valores contínuos e minimizando o erro quadrático médio.
@@ -117,6 +147,9 @@ Técnicas como regularização L1 e L2 ajudam a reduzir esse problema, penalizan
 ![Gráfico](img/RL_multicolinearidade.png)
 
 
+## O que significa uma variável apresentar VIF alto e o que você faria nesse caso?
+VIF alto indica que uma feature pode ser explicada linearmente pelas demais, inflando a variância e tornando seu coeficiente instável. Eu investigaria as variáveis envolvidas e, conforme o objetivo, removeria a menos relevante, combinaria features, aplicaria Ridge ou usaria PCA. A decisão consideraria desempenho, estabilidade e interpretabilidade
+
 ## Como validar multicolinearidade com calculo de VIF?
 O VIF é uma métrica usada para detectar multicolinearidade entre variáveis explicativas em modelos lineares. Ele mede o quanto a variância de um coeficiente está sendo “inflada” por causa da correlação entre preditores.
 
@@ -133,6 +166,7 @@ Limitação importante do VIF
 - não captura relações não lineares complexas.
 
 ![Gráfico](img/RL_VIF.png)
+
 
 
 ## Lasso x Ridge

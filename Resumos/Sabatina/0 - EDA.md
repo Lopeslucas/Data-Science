@@ -94,3 +94,9 @@ Isso é importante porque categorias muito raras podem gerar ruído no modelo, e
 Também posso fazer análise bivariada, por exemplo cruzando com a variável target, pra entender se alguma categoria tem mais impacto no problema.
 
 Com isso eu consigo entender distribuição, relevância e possíveis ajustes que preciso fazer na variável.
+
+## Você recebeu uma base de crédito. Antes de separar treino e teste, alguém imputou os valores ausentes usando a mediana da base completa. Qual é o problema e como você corrigiria?
+Isso causa data leakage porque a mediana foi calculada usando também informações do teste. Eu voltaria à base anterior à imputação, faria o train-test split e ajustaria o imputador somente no treino. Depois, aplicaria essa mesma mediana ao treino e ao teste, preferencialmente usando um pipeline. Também avaliaria o padrão e a proporção dos missings antes de decidir se a mediana é a estratégia adequada
+
+## O que é multicolinearidade, qual problema ela causa e como você a identificaria?
+Multicolinearidade ocorre quando uma variável explicativa possui forte relação linear com uma ou mais variáveis explicativas. Isso aumenta a variância dos coeficientes, tornando-os instáveis, com erros-padrão elevados e interpretação pouco confiável. Eu começaria com uma matriz de correlação e aprofundaria usando VIF, que mede quanto a variância de cada coeficiente está inflada pela relação com as demais variáveis.
