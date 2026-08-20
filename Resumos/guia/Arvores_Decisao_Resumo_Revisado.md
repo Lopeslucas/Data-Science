@@ -1,0 +1,416 @@
+# Árvores de decisão — resumo para sabatina
+
+Este material reorganiza os conceitos cobrados nas imagens em um guia contínuo. O objetivo não é reproduzir cada pergunta, mas reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
+
+---
+
+## 1. Ideia central
+
+Uma árvore de decisão é um algoritmo supervisionado e preditivo que divide o espaço dos dados por meio de regras condicionais.
+
+- Na **classificação**, a folha retorna uma classe ou probabilidades de classes.
+- Na **regressão**, a folha retorna um valor numérico, normalmente uma média.
+- Pode resolver classificação binária ou multiclasse.
+- É **não paramétrica**: sua estrutura pode crescer conforme a complexidade dos dados.
+- É um algoritmo **guloso**: escolhe o melhor corte naquele momento, sem garantir a melhor árvore global.
+
+> **Resposta curta para sabatina:** a árvore aprende uma sequência hierárquica de regras que separa os dados em regiões progressivamente mais homogêneas.
+
+---
+
+## 2. Como funciona
+
+Em cada nó, o algoritmo:
+
+1. testa atributos e pontos de corte candidatos;
+2. mede a impureza produzida por cada divisão;
+3. escolhe a divisão que mais reduz a impureza;
+4. repete o processo nos subconjuntos resultantes;
+5. encerra o crescimento ao atingir algum critério de parada.
+
+Para prever uma nova observação, basta percorrer as regras da raiz até uma folha.
+
+```text
+Se temperatura <= 20:
+    seguir para a esquerda
+Senão:
+    seguir para a direita
+```
+
+Cada caminho completo da raiz até uma folha equivale a uma conjunção de regras:
+
+```text
+temperatura <= 20  E  umidade > 70  E  vento = fraco
+```
+
+---
+
+## 3. Anatomia da árvore
+
+| Elemento | Função |
+|---|---|
+| Nó raiz | Primeiro corte da árvore |
+| Nó interno ou de decisão | Aplica um teste sobre um atributo |
+| Ramo | Resultado possível de uma regra |
+| Nó folha | Produz a predição final |
+| Profundidade | Comprimento do maior caminho da raiz até uma folha |
+
+A árvore é uma estrutura hierárquica acíclica. Em árvores binárias, cada nó interno possui no máximo dois filhos.
+
+Premissas conceituais importantes:
+
+- existem regras capazes de separar regiões dos dados;
+- atributos podem ter importâncias diferentes para essa separação;
+- cada registro pode ser associado a uma região definida por uma sequência de regras.
+
+---
+
+## 4. Como o melhor corte é escolhido
+
+### Índice de Gini
+
+Mede a chance de erro ao rotular aleatoriamente uma observação segundo a distribuição do nó.
+
+```text
+Gini = 1 - soma(p_k²)
+```
+
+- Gini igual a `0`: nó puro.
+- Quanto maior o Gini, maior a mistura de classes.
+- Em um problema binário, o máximo é `0,5`.
+
+### Entropia
+
+Mede a incerteza da distribuição das classes.
+
+```text
+Entropia = - soma[p_k × log2(p_k)]
+```
+
+- Entropia igual a `0`: nó puro.
+- Em um problema binário balanceado, o máximo é `1`.
+
+### Impureza ponderada do corte
+
+Não basta comparar a impureza isolada dos filhos. É necessário ponderá-la pelo número de observações de cada lado.
+
+```text
+Impureza do corte = (n_esq / n) × I_esq
+                  + (n_dir / n) × I_dir
+```
+
+### Ganho de informação
+
+```text
+Ganho = Impureza do nó pai - Impureza ponderada dos filhos
+```
+
+O melhor corte maximiza o ganho ou, equivalentemente, minimiza a impureza ponderada.
+
+### Gini ou entropia?
+
+Em geral, produzem árvores semelhantes. O Gini costuma ser ligeiramente mais barato por não calcular logaritmos. No gráfico binário tradicional, a curva da entropia fica acima da curva do Gini, embora ambas sejam mínimas em nós puros e máximas no maior equilíbrio entre classes.
+
+> **Pegadinha:** ganho de informação é derivado da redução de entropia. Gini e entropia são critérios de impureza; Dunn e Davies–Bouldin são métricas de agrupamento.
+
+---
+
+## 5. Parâmetros aprendidos e hiperparâmetros
+
+### Parâmetros aprendidos
+
+São definidos durante o treinamento:
+
+- atributo escolhido em cada nó;
+- ponto de corte de cada regra;
+- estrutura da árvore;
+- distribuição das classes ou valor previsto em cada folha;
+- importância calculada para os atributos.
+
+### Hiperparâmetros
+
+São definidos antes do treinamento e controlam o crescimento.
+
+| Hiperparâmetro | Efeito principal |
+|---|---|
+| `criterion` | Define a medida usada nos cortes, como Gini ou entropia |
+| `max_depth` | Limita a profundidade máxima |
+| `min_samples_split` | Mínimo de amostras para dividir um nó |
+| `min_samples_leaf` | Mínimo de amostras permitido em uma folha |
+| `max_leaf_nodes` | Limita o número de folhas |
+| `max_features` | Limita atributos avaliados em cada divisão |
+| `min_impurity_decrease` | Exige redução mínima de impureza |
+| `ccp_alpha` | Controla a poda por complexidade de custo |
+| `class_weight` | Aumenta ou reduz o peso das classes |
+| `random_state` | Controla operações aleatórias para reprodutibilidade |
+
+> **Pegadinha:** `max_depth` não é o número total de nós. É a quantidade máxima de níveis, ou o comprimento máximo de um caminho da raiz até uma folha.
+
+---
+
+## 6. Complexidade, viés e variância
+
+Uma árvore sem restrições tende a crescer até criar regiões muito específicas.
+
+| Situação | Viés | Variância | Risco |
+|---|---:|---:|---|
+| Árvore rasa | Alto | Baixa | Underfitting |
+| Árvore profunda | Baixo | Alta | Overfitting |
+
+Quando `max_depth` é muito grande, a árvore tende a:
+
+- criar mais regras e folhas;
+- produzir folhas com poucos registros;
+- reduzir muito o erro de treino;
+- aumentar a diferença entre treino e teste;
+- ficar mais sensível a ruído e pequenas mudanças nos dados.
+
+Uma árvore individual é considerada instável porque pequenas alterações na amostra podem mudar os primeiros cortes e, consequentemente, toda a estrutura posterior.
+
+---
+
+## 7. Como controlar o overfitting
+
+### Pré-poda
+
+Interrompe o crescimento antes que a árvore fique excessivamente específica:
+
+- limitar `max_depth`;
+- aumentar `min_samples_split`;
+- aumentar `min_samples_leaf`;
+- limitar `max_leaf_nodes`;
+- exigir `min_impurity_decrease`.
+
+### Pós-poda
+
+A árvore cresce e depois ramos pouco úteis são removidos. No scikit-learn, o principal controle é `ccp_alpha`.
+
+### Outras estratégias
+
+- ajustar hiperparâmetros com validação cruzada;
+- remover atributos irrelevantes ou com vazamento;
+- aumentar a quantidade e a qualidade dos dados;
+- combinar árvores em ensembles, como Random Forest e boosting.
+
+> Trocar Gini por entropia ou padronizar os dados não é uma solução direta para overfitting.
+
+---
+
+## 8. Premissas e preparação dos dados
+
+Árvores exigem poucas premissas estatísticas:
+
+- não exigem normalidade;
+- não exigem relação linear;
+- não exigem variáveis na mesma escala;
+- conseguem modelar interações e relações não lineares;
+- teoricamente podem trabalhar com atributos numéricos e categóricos.
+
+Na implementação do scikit-learn, atributos categóricos precisam ser convertidos para números. A codificação deve ser escolhida com cuidado, pois uma codificação ordinal inadequada pode criar uma ordem artificial.
+
+### Escala
+
+Padronização e normalização normalmente não alteram os cortes relevantes, pois a árvore compara valores de um atributo com um limiar. Portanto, `StandardScaler`, `MinMaxScaler` e `RobustScaler` não são obrigatórios.
+
+### Valores ausentes
+
+O tratamento depende da implementação. Quando o estimador não aceita valores ausentes, é necessário imputá-los dentro de um pipeline para evitar vazamento de dados.
+
+### Outliers
+
+Árvores costumam ser mais robustas a outliers do que modelos baseados em distância, mas não são imunes. Um valor extremo pode criar um corte específico, gerar folhas pequenas e aumentar o overfitting.
+
+---
+
+## 9. Classes desbalanceadas
+
+Árvores podem favorecer a classe majoritária porque a redução global de impureza pode ser dominada por ela.
+
+Como lidar:
+
+- usar `class_weight="balanced"` ou pesos definidos pelo negócio;
+- aplicar subamostragem ou sobreamostragem somente no treino;
+- usar validação estratificada;
+- avaliar precision, recall, F1, PR-AUC e matriz de confusão;
+- escolher a métrica de seleção conforme o custo de falso positivo e falso negativo.
+
+> **Pegadinha:** acurácia alta não garante bom desempenho na classe minoritária.
+
+---
+
+## 10. Pontos positivos e negativos
+
+| Pontos positivos | Pontos negativos |
+|---|---|
+| Fácil de explicar e visualizar | Uma árvore profunda sofre overfitting |
+| Pouco pré-processamento | Alta variância e instabilidade |
+| Não exige escala comum | Cortes são geralmente paralelos aos eixos |
+| Captura não linearidades e interações | Fronteiras podem ficar fragmentadas |
+| Serve para classificação e regressão | Pode favorecer classes majoritárias |
+| Predição rápida | Árvores grandes perdem interpretabilidade |
+| Faz seleção implícita de atributos | Importância por impureza pode ser enviesada |
+
+### Como mitigar
+
+| Problema | Tratamento |
+|---|---|
+| Overfitting | Pré-poda, pós-poda e validação cruzada |
+| Instabilidade | Ensembles e controle de complexidade |
+| Desbalanceamento | Pesos, reamostragem e métricas adequadas |
+| Folhas muito pequenas | Aumentar `min_samples_leaf` |
+| Pouca interpretabilidade | Limitar profundidade e número de folhas |
+| Importância enganosa | Usar permutation importance ou SHAP com cautela |
+
+---
+
+## 11. Custo computacional
+
+Considere:
+
+- `n`: número de observações;
+- `p`: número de atributos;
+- `h`: profundidade da árvore.
+
+### Treinamento
+
+Em uma implementação eficiente e árvore aproximadamente balanceada:
+
+```text
+O(p × n × log n)
+```
+
+No pior caso, com árvore muito desbalanceada:
+
+```text
+O(p × n²)
+```
+
+### Predição
+
+Uma observação percorre um caminho da raiz até uma folha:
+
+```text
+O(h)
+```
+
+Em uma árvore balanceada, `h` tende a `log n`. No pior caso, pode se aproximar de `n`.
+
+### Memória
+
+```text
+O(número de nós)
+```
+
+Comparação qualitativa comum:
+
+```text
+Naive Bayes < Árvore de Decisão < KNN brute force na predição
+```
+
+Essa ordem é uma simplificação: tamanho da árvore, dimensionalidade, implementação e fase analisada alteram o custo real.
+
+---
+
+## 12. Principais variantes
+
+| Algoritmo | Característica |
+|---|---|
+| ID3 | Usa ganho de informação e foi concebido para atributos categóricos |
+| C4.5 | Evolui o ID3, aceita atributos contínuos e utiliza razão de ganho |
+| C5.0 | Evolução mais eficiente do C4.5 |
+| CART | Produz divisões binárias e atende classificação e regressão |
+
+No scikit-learn, as árvores seguem uma abordagem próxima ao CART, com divisões binárias.
+
+---
+
+## 13. Exemplos compactos das imagens
+
+### Corte em `X = 1,5`
+
+No exemplo mostrado:
+
+- o lado esquerdo contém somente pontos azuis, portanto `Gini = 0`;
+- o lado direito contém duas classes, com Gini aproximado de `0,278`.
+
+Isso demonstra que a qualidade do corte deve ser avaliada pela impureza ponderada dos dois filhos, não somente pelo lado mais puro.
+
+### Base Play Tennis
+
+Ao comparar os atributos da tabela pelo Gini ponderado, **Outlook** é o melhor atributo para a raiz. Ele produz subconjuntos mais homogêneos que Temperature, Humidity e Wind.
+
+> A coluna alvo `Play Tennis` nunca pode ser usada como atributo de entrada. Isso seria vazamento da resposta.
+
+---
+
+## 14. Pegadinhas frequentes
+
+1. Árvore de decisão não serve apenas para classificação binária.
+2. Também pode fazer regressão.
+3. É supervisionada, preditiva, gulosa e não paramétrica.
+4. Não é algoritmo baseado em instâncias.
+5. Não exige padronização ou normalização.
+6. Gini igual a zero significa nó puro, não ausência de dados.
+7. O melhor corte considera a impureza ponderada dos filhos.
+8. Uma árvore profunda normalmente tem baixo viés e alta variância.
+9. Aumentar `max_depth` não garante melhor generalização.
+10. Outliers podem afetar a árvore, embora a escala não seja um problema.
+11. Pequenas alterações nos dados podem mudar bastante a estrutura.
+12. Importância de atributo não implica causalidade.
+13. Uma árvore individual não é Random Forest; Random Forest é um ensemble de árvores.
+14. O treinamento costuma ser mais caro que uma única predição.
+
+---
+
+## 15. Roteiro de resposta para sabatina
+
+Se perguntarem **“como a árvore funciona?”**:
+
+> Ela testa atributos e limiares, escolhe de forma gulosa o corte que mais reduz a impureza e repete o processo até alcançar um critério de parada. A predição é obtida percorrendo as regras da raiz até uma folha.
+
+Se perguntarem **“qual é o principal risco?”**:
+
+> Uma árvore profunda apresenta baixa tendência de erro no treino, mas alta variância, instabilidade e risco de overfitting. Isso é controlado com pré-poda, pós-poda, validação cruzada ou ensembles.
+
+Se perguntarem **“precisa escalar?”**:
+
+> Não. Como os cortes dependem da ordenação dos valores de cada atributo, transformações monotônicas de escala normalmente não alteram a estrutura relevante.
+
+Se perguntarem **“Gini ou entropia?”**:
+
+> Ambos medem impureza e geralmente geram resultados semelhantes. Gini costuma ser um pouco mais barato; entropia permite interpretar a redução como ganho de informação.
+
+Se perguntarem **“parâmetro ou hiperparâmetro?”**:
+
+> Atributos, limiares e folhas são aprendidos e funcionam como parâmetros do modelo. Profundidade máxima, critério, quantidade mínima de amostras e força da poda são hiperparâmetros definidos antes do ajuste.
+
+---
+
+## 16. Checklist final
+
+- [ ] Sei explicar raiz, nó interno, ramo, folha e profundidade.
+- [ ] Sei diferenciar classificação de regressão.
+- [ ] Sei explicar Gini, entropia e ganho de informação.
+- [ ] Sei calcular a impureza ponderada de um corte.
+- [ ] Sei diferenciar parâmetros aprendidos de hiperparâmetros.
+- [ ] Sei explicar por que árvore profunda tende ao overfitting.
+- [ ] Sei citar pré-poda, pós-poda e ensembles.
+- [ ] Sei explicar por que escala não é obrigatória.
+- [ ] Sei discutir outliers e classes desbalanceadas.
+- [ ] Sei descrever os custos de treino e predição.
+
+---
+
+## Resumo de bolso
+
+```text
+Árvore de decisão = regras condicionais hierárquicas
+Aprendizado       = supervisionado, preditivo, guloso e não paramétrico
+Tarefas           = classificação e regressão
+Critérios         = Gini, entropia e redução de impureza
+Escala            = não é obrigatória
+Risco principal   = árvore profunda → baixo viés, alta variância e overfitting
+Controle          = max_depth, min_samples_leaf, poda, CV e ensembles
+Treino típico     = O(p × n × log n)
+Predição           = O(profundidade)
+```
