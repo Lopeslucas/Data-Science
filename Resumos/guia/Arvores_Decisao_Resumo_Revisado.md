@@ -1,6 +1,6 @@
 # Árvores de decisão — resumo para sabatina
 
-Este material reorganiza os conceitos cobrados nas imagens em um guia contínuo. O objetivo não é reproduzir cada pergunta, mas reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
+Este material reorganiza os conceitos cobrados em um guia contínuo. O objetivo é reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
 
 ---
 
@@ -323,27 +323,7 @@ Essa ordem é uma simplificação: tamanho da árvore, dimensionalidade, impleme
 No scikit-learn, as árvores seguem uma abordagem próxima ao CART, com divisões binárias.
 
 ---
-
-## 13. Exemplos compactos das imagens
-
-### Corte em `X = 1,5`
-
-No exemplo mostrado:
-
-- o lado esquerdo contém somente pontos azuis, portanto `Gini = 0`;
-- o lado direito contém duas classes, com Gini aproximado de `0,278`.
-
-Isso demonstra que a qualidade do corte deve ser avaliada pela impureza ponderada dos dois filhos, não somente pelo lado mais puro.
-
-### Base Play Tennis
-
-Ao comparar os atributos da tabela pelo Gini ponderado, **Outlook** é o melhor atributo para a raiz. Ele produz subconjuntos mais homogêneos que Temperature, Humidity e Wind.
-
-> A coluna alvo `Play Tennis` nunca pode ser usada como atributo de entrada. Isso seria vazamento da resposta.
-
----
-
-## 14. Pegadinhas frequentes
+## 13. Pegadinhas frequentes
 
 1. Árvore de decisão não serve apenas para classificação binária.
 2. Também pode fazer regressão.
@@ -362,7 +342,7 @@ Ao comparar os atributos da tabela pelo Gini ponderado, **Outlook** é o melhor 
 
 ---
 
-## 15. Roteiro de resposta para sabatina
+## 14. Roteiro de resposta para sabatina
 
 Se perguntarem **“como a árvore funciona?”**:
 
@@ -386,7 +366,7 @@ Se perguntarem **“parâmetro ou hiperparâmetro?”**:
 
 ---
 
-## 16. Checklist final
+## 15. Checklist final
 
 - [ ] Sei explicar raiz, nó interno, ramo, folha e profundidade.
 - [ ] Sei diferenciar classificação de regressão.

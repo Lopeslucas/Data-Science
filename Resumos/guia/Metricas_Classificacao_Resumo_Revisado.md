@@ -1,5 +1,7 @@
 # Métricas de classificação e validação — resumo revisado
 
+Este material reorganiza os conceitos cobrados em um guia contínuo. O objetivo é reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
+
 ## 1. Ideia central
 
 Uma boa avaliação não pergunta apenas “quantos o modelo acertou?”, mas também:

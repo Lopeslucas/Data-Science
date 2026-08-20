@@ -1,5 +1,8 @@
 # Métricas de Avaliação para Modelos de Regressão
 
+Este material reorganiza os conceitos cobrados em um guia contínuo. O objetivo é reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
+
+
 ## Visão rápida
 
 Em regressão, o modelo prevê um valor numérico contínuo. A avaliação deve responder principalmente:

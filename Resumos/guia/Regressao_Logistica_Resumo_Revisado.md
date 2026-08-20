@@ -1,6 +1,6 @@
 # Regressão Logística — resumo para sabatina
 
-Este material foi reconstruído a partir das perguntas enviadas, mas **não segue o formato pergunta por pergunta**. A ideia é formar uma explicação contínua, curta e defensável em uma sabatina.
+Este material reorganiza os conceitos cobrados em um guia contínuo. O objetivo é reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
 
 ---
 

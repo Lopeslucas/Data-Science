@@ -1,5 +1,7 @@
 # Naive Bayes — resumo revisado para sabatina
 
+Este material reorganiza os conceitos cobrados em um guia contínuo. O objetivo é reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
+
 ## 1. Visão geral
 
 Naive Bayes é uma família de classificadores supervisionados e probabilísticos baseados no Teorema de Bayes. O termo *naive* vem da hipótese forte de que os atributos são condicionalmente independentes dada a classe.

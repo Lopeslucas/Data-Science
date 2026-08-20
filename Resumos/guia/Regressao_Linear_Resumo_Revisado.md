@@ -1,6 +1,6 @@
 # Regressão Linear, Ridge, Lasso e Elastic Net — Resumo para Sabatina
 
-Este material organiza os conceitos centrais das imagens em formato de revisão. O objetivo não é reproduzir cada pergunta, mas preparar respostas curtas, corretas e justificadas.
+Este material reorganiza os conceitos cobrados em um guia contínuo. O objetivo é reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
 
 ---
 

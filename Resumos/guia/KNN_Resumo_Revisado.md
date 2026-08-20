@@ -1,4 +1,7 @@
-# KNN — resumo revisado para sabatina
+# KNN — resumo para sabatina
+
+Este material reorganiza os conceitos cobrados em um guia contínuo. O objetivo é reunir o que costuma ser exigido em uma sabatina: funcionamento, premissas, parâmetros, hiperparâmetros, custo, limitações e pegadinhas.
+
 
 ## 1. Visão geral
 

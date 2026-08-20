@@ -1,0 +1,561 @@
+# Fundamentos de Estatística, Data Prep e Validação
+
+> Guia compacto para sabatina de Ciência de Dados. O foco é entender **o conceito, quando usar, limitações, tratamento e pegadinhas**, e não decorar respostas isoladas.
+
+---
+
+## 1. Visão geral
+
+Um projeto de modelagem confiável segue, em geral, esta sequência:
+
+1. Entender o problema, a variável-alvo e o custo dos erros.
+2. Auditar qualidade, distribuição e origem dos dados.
+3. Separar treino, validação e teste de forma compatível com o problema.
+4. Ajustar o pré-processamento **somente no treino**.
+5. Criar uma referência simples (*baseline*).
+6. Treinar, ajustar hiperparâmetros e validar.
+7. Avaliar estabilidade, resíduos, vieses e desempenho por segmento.
+8. Testar uma única vez no conjunto final e planejar monitoramento.
+
+### Regra de ouro
+
+Qualquer transformação que aprende algo dos dados — imputação, escala, PCA, seleção de variáveis, codificação por alvo ou balanceamento — deve ser ajustada apenas no treino de cada divisão. Caso contrário, ocorre **vazamento de dados**.
+
+---
+
+## 2. Estatística descritiva
+
+### Medidas de centralidade
+
+| Medida | Definição | Ponto de atenção |
+|---|---|---|
+| Média | Soma dos valores dividida pela quantidade | Sensível a valores extremos |
+| Mediana | Valor central após ordenar os dados | Robusta a outliers |
+| Moda | Valor mais frequente | Pode haver mais de uma ou nenhuma moda |
+| Média ponderada | Cada valor contribui com um peso | Os pesos precisam representar o problema |
+
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+$$
+
+### Medidas de posição
+
+- Quartis dividem os dados ordenados em quatro partes.
+- $Q_1$ é o percentil 25; $Q_2$ é a mediana; $Q_3$ é o percentil 75.
+- O intervalo interquartil é:
+
+$$
+IQR=Q_3-Q_1
+$$
+
+Uma regra exploratória comum considera suspeitos valores abaixo de $Q_1-1{,}5IQR$ ou acima de $Q_3+1{,}5IQR$. Isso é um **sinal**, não uma ordem automática de exclusão.
+
+### Dispersão
+
+| Medida | Interpretação |
+|---|---|
+| Amplitude | Máximo menos mínimo; muito sensível a extremos |
+| Variância | Dispersão quadrática em torno da média |
+| Desvio-padrão | Raiz da variância; possui a unidade original |
+| IQR | Dispersão dos 50% centrais; robusta a extremos |
+| MAD | Desvio absoluto mediano; bastante robusto |
+
+Variância amostral:
+
+$$
+s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2
+$$
+
+Desvio-padrão amostral:
+
+$$
+s=\sqrt{s^2}
+$$
+
+### Covariância e correlação
+
+- Covariância indica se duas variáveis variam na mesma direção, mas depende da escala.
+- Correlação de Pearson padroniza a covariância e mede associação **linear** entre $-1$ e $1$.
+- Spearman opera sobre postos e mede associação monotônica, sendo útil para relações não lineares monotônicas e dados ordinais.
+- Correlação não implica causalidade e correlação próxima de zero não elimina relações não lineares.
+
+---
+
+## 3. Distribuições estatísticas
+
+Uma distribuição descreve os valores possíveis de uma variável aleatória e a probabilidade associada a eles.
+
+### Distribuições principais
+
+| Distribuição | Tipo | Parâmetros | Média | Variância | Exemplo |
+|---|---|---:|---:|---:|---|
+| Bernoulli | Discreta | $p$ | $p$ | $p(1-p)$ | Uma compra ocorreu ou não |
+| Binomial | Discreta | $n,p$ | $np$ | $np(1-p)$ | Compras em $n$ tentativas independentes |
+| Poisson | Discreta | $\lambda$ | $\lambda$ | $\lambda$ | Chamados por hora |
+| Geométrica | Discreta | $p$ | $1/p$ | $(1-p)/p^2$ | Tentativas até o primeiro sucesso |
+| Uniforme | Contínua | $a,b$ | $(a+b)/2$ | $(b-a)^2/12$ | Valores equiprováveis em um intervalo |
+| Normal | Contínua | $\mu,\sigma^2$ | $\mu$ | $\sigma^2$ | Erros resultantes de muitos pequenos efeitos |
+
+### Bernoulli e Binomial
+
+- Bernoulli representa **uma tentativa** com sucesso ou fracasso.
+- Binomial representa o número de sucessos em $n$ tentativas Bernoulli independentes, com o mesmo $p$.
+
+$$
+P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}
+$$
+
+### Poisson
+
+Modela contagens em um intervalo quando os eventos são aproximadamente independentes e ocorrem a uma taxa média constante.
+
+$$
+P(X=k)=\frac{e^{-\lambda}\lambda^k}{k!}
+$$
+
+Se a variância observada for muito maior que a média, há **sobredispersão** e a Poisson pode não ser adequada.
+
+### Geométrica
+
+Modela o número de tentativas até o primeiro sucesso, sob tentativas independentes e probabilidade constante.
+
+> Pegadinha: algumas fontes contam as falhas antes do sucesso. Nessa convenção, a média muda de $1/p$ para $(1-p)/p$.
+
+### Normal
+
+É simétrica, unimodal e definida por média e variância:
+
+$$
+X\sim\mathcal{N}(\mu,\sigma^2)
+$$
+
+Aproximadamente 68%, 95% e 99,7% dos valores ficam, respectivamente, a 1, 2 e 3 desvios-padrão da média.
+
+> Pegadinha: regressão linear não exige que as variáveis explicativas sejam normais. Para inferência clássica, a normalidade relevante é a dos **erros condicionais**, além das outras premissas.
+
+### Teorema Central do Limite
+
+Sob condições adequadas e amostras suficientemente grandes, a distribuição da média amostral tende à Normal, mesmo quando a variável original não é normal. Isso não transforma os dados originais em normais.
+
+---
+
+## 4. Data preparation
+
+### Auditoria inicial
+
+Verifique:
+
+- unidade de observação e granularidade;
+- significado e origem de cada coluna;
+- duplicidades e chaves inconsistentes;
+- tipos, intervalos e unidades de medida;
+- datas impossíveis e eventos posteriores ao alvo;
+- faltantes, outliers e categorias raras;
+- distribuição do alvo e mudança ao longo do tempo;
+- possíveis variáveis substitutas do alvo (*target leakage*).
+
+### Ordem prática
+
+1. Definir alvo, população, horizonte e métrica.
+2. Separar treino e avaliação.
+3. Aprender regras de limpeza e transformação no treino.
+4. Aplicar exatamente as mesmas regras à validação e ao teste.
+5. Encapsular o processo em um `Pipeline` quando possível.
+
+### Vazamentos comuns
+
+- Imputar ou padronizar usando o conjunto completo.
+- Aplicar SMOTE antes da validação cruzada.
+- Usar informações futuras em uma previsão temporal.
+- Selecionar variáveis olhando o desempenho no teste.
+- Fazer *target encoding* sem separação interna ou *cross-fitting*.
+- Manter registros da mesma pessoa nos conjuntos de treino e teste.
+
+---
+
+## 5. Dados ausentes
+
+### Tipos de missing
+
+| Tipo | Significado | Exemplo |
+|---|---|---|
+| MCAR | A ausência independe dos valores observados e não observados | Falha aleatória de sensor |
+| MAR | A ausência depende de variáveis observadas | Renda ausente varia conforme faixa etária registrada |
+| MNAR | A ausência depende do próprio valor ausente ou de causa não observada | Pessoas de renda alta evitam informar renda |
+| Estrutural | O campo não se aplica àquela observação | Número de filhos para entidade sem pessoa física |
+
+### Tratamentos
+
+- Corrigir a fonte quando o problema for operacional.
+- Remover linhas ou colunas apenas com justificativa e avaliação de viés.
+- Imputar média para distribuições simétricas sem extremos relevantes.
+- Imputar mediana para dados assimétricos ou com outliers.
+- Imputar moda ou uma categoria explícita em variáveis categóricas.
+- Usar KNN, imputação iterativa ou modelos quando relações entre variáveis forem úteis.
+- Criar indicador de ausência quando o fato de faltar puder carregar informação.
+- Em séries temporais, usar preenchimento temporal somente quando fizer sentido causal e sem olhar o futuro.
+
+> Imputação reduz incerteza artificialmente. Em análises inferenciais, imputação múltipla pode ser preferível a preencher todos os casos com um único valor.
+
+---
+
+## 6. Outliers
+
+### Como identificar
+
+- Regras de negócio e limites físicos.
+- Boxplot e regra do IQR.
+- Z-score, quando a distribuição justificar.
+- Z-score robusto baseado na mediana e no MAD.
+- Resíduos, alavancagem e distância de Cook em regressão.
+- Métodos multivariados, pois um ponto pode ser normal em cada coluna isolada e anômalo em conjunto.
+
+### Como tratar
+
+| Estratégia | Quando considerar | Cuidado |
+|---|---|---|
+| Corrigir | Erro de medição ou digitação confirmado | Preservar rastreabilidade |
+| Remover | Registro inválido ou fora da população-alvo | Não excluir só porque é raro |
+| Winsorizar | Limitar influência de caudas extremas | Pode esconder eventos reais |
+| `log1p` | Assimetria positiva e presença de zero | Altera interpretação e não aceita valores menores que -1 |
+| Box-Cox | Variável estritamente positiva | O parâmetro deve ser aprendido no treino |
+| Yeo-Johnson | Há zero ou valores negativos | Também deve ser ajustada apenas no treino |
+| RobustScaler | Deseja escala menos sensível a extremos | Não elimina o outlier |
+| Perda/modelo robusto | Extremos legítimos permanecem | Avaliar a métrica alinhada ao negócio |
+
+> Transformar ou padronizar não “remove” outliers. Primeiro descubra se são erro, evento legítimo, mudança de regime ou uma população diferente.
+
+---
+
+## 7. Conversão de variáveis categóricas
+
+| Técnica | Uso adequado | Risco principal |
+|---|---|---|
+| Ordinal encoding | Existe ordem real entre categorias | Criar ordem artificial |
+| One-hot encoding | Categorias nominais e cardinalidade moderada | Alta dimensionalidade |
+| Dummy encoding | Igual ao one-hot, removendo uma referência | “Dummy variable trap” em modelos lineares |
+| Frequency encoding | Cardinalidade alta; frequência é informativa | Categorias diferentes podem receber o mesmo valor |
+| Target encoding | Cardinalidade alta e forte relação com o alvo | Vazamento e overfitting |
+| Hashing | Cardinalidade muito alta ou categorias dinâmicas | Colisões e menor interpretabilidade |
+| Embeddings | Grandes volumes e modelos neurais | Maior custo e complexidade |
+
+Boas práticas:
+
+- Reservar tratamento para categorias desconhecidas.
+- Agrupar categorias raras quando fizer sentido.
+- Ajustar o encoder somente no treino.
+- Em *target encoding*, usar suavização e *cross-fitting*.
+- Não aplicar codificação ordinal a variáveis nominais apenas para economizar colunas.
+
+---
+
+## 8. Padronização e normalização
+
+| Técnica | Transformação | Característica |
+|---|---|---|
+| StandardScaler | $(x-\mu)/\sigma$ | Média 0 e desvio-padrão 1; sensível a outliers |
+| MinMaxScaler | $(x-x_{min})/(x_{max}-x_{min})$ | Intervalo definido, geralmente $[0,1]$; sensível a extremos |
+| RobustScaler | Centraliza pela mediana e escala pelo IQR | Menos sensível a outliers |
+| MaxAbsScaler | Divide pelo maior valor absoluto | Preserva esparsidade |
+| Normalização vetorial | Ajusta cada linha para norma 1 | Muda magnitude da observação, não a escala de cada coluna |
+
+Escala é especialmente importante em:
+
+- KNN e outros métodos por distância;
+- PCA;
+- SVM;
+- redes neurais e otimização por gradiente;
+- modelos com regularização L1 ou L2.
+
+Árvores geralmente não precisam de escala, pois seus cortes dependem da ordenação dos valores.
+
+> “Normalizar” é um termo ambíguo: pode significar colocar em intervalo, ajustar a norma de uma linha ou tornar uma distribuição mais próxima da Normal. Na sabatina, explicite o significado.
+
+---
+
+## 9. Multicolinearidade e VIF
+
+Multicolinearidade ocorre quando uma variável explicativa é fortemente explicada por outras. Ela pode tornar coeficientes instáveis, aumentar erros-padrão e dificultar interpretação, mesmo que a previsão continue aceitável.
+
+Para a variável $X_j$:
+
+$$
+VIF_j=\frac{1}{1-R_j^2}
+$$
+
+$R_j^2$ vem da regressão de $X_j$ contra as demais variáveis explicativas.
+
+- VIF igual a 1: sem explicação linear pelas demais.
+- Acima de 5 ou 10: sinal de atenção, não uma lei universal.
+
+Possíveis ações:
+
+- remover uma variável redundante com justificativa de negócio;
+- combinar variáveis;
+- aumentar amostra;
+- usar Ridge para estabilizar coeficientes;
+- usar PCA quando perder interpretação for aceitável.
+
+> VIF não mede relevância para o alvo e não prova causalidade.
+
+---
+
+## 10. Feature importance
+
+### Formas principais
+
+| Método | Vantagem | Limitação |
+|---|---|---|
+| Coeficientes | Simples e direcionais | Magnitudes só são comparáveis com escalas compatíveis; dependem da especificação |
+| Importância por impureza | Barata em árvores | Favorece variáveis contínuas ou de alta cardinalidade |
+| Permutation importance | Avalia perda real de desempenho | Variáveis correlacionadas podem mascarar umas às outras |
+| SHAP | Explicações globais e locais | Maior custo e exige interpretação cuidadosa |
+| Ablação | Mede impacto ao remover informação | Exige novos ajustes e é custosa |
+
+Boas práticas:
+
+- Calcular importância em validação ou teste apropriado, não apenas no treino.
+- Avaliar estabilidade entre *folds* e períodos.
+- Examinar importância por segmento.
+- Lembrar que importância preditiva não significa causalidade.
+- Evitar interpretar coeficiente como importância sem considerar escala, correlação e regularização.
+
+---
+
+## 11. PCA
+
+PCA é uma transformação linear **não supervisionada** que cria componentes ortogonais de máxima variância.
+
+### Processo
+
+1. Padronizar as variáveis quando as escalas forem diferentes.
+2. Calcular a decomposição da matriz, normalmente por SVD.
+3. Ordenar componentes pela variância explicada.
+4. Escolher quantos componentes manter.
+5. Projetar os dados no novo espaço.
+
+### Pontos positivos
+
+- Reduz dimensionalidade e redundância.
+- Pode reduzir custo computacional e ruído.
+- Remove multicolinearidade entre os componentes.
+- Ajuda na visualização em duas ou três dimensões.
+
+### Pontos negativos
+
+- Reduz interpretabilidade.
+- Componentes de alta variância não são necessariamente os mais úteis para prever o alvo.
+- É sensível à escala e a outliers.
+- O número de componentes é hiperparâmetro.
+
+> PCA não é seleção de variáveis: cada componente normalmente combina várias variáveis originais.
+
+---
+
+## 12. Classes desbalanceadas
+
+### Diagnóstico
+
+Acurácia pode ser enganosa. Considere:
+
+- matriz de confusão;
+- precisão, recall e F1 por classe;
+- PR-AUC, especialmente quando a classe positiva é rara;
+- ROC-AUC com cautela em desbalanceamento extremo;
+- balanced accuracy e métricas alinhadas ao custo do negócio;
+- calibração das probabilidades.
+
+### Estratégias
+
+| Estratégia | Vantagem | Risco |
+|---|---|---|
+| Ajustar limiar | Alinha decisão ao custo de FP e FN | Não melhora necessariamente o ranking |
+| Peso de classe | Não cria exemplos artificiais | Pode piorar calibração |
+| Oversampling aleatório | Preserva minoria | Replica ruído e pode causar overfitting |
+| Undersampling | Reduz custo | Descarta informação da maioria |
+| SMOTE | Cria exemplos sintéticos entre vizinhos | Pode interpolar ruído ou sobreposição |
+| Modelos especializados | Integram balanceamento ao algoritmo | Mais complexidade de ajuste |
+
+### Regra crítica
+
+O balanceamento deve ocorrer **somente no treino de cada fold**. Validação e teste precisam manter uma distribuição representativa do uso real.
+
+Em dados temporais, de grupo, texto ou variáveis categóricas, SMOTE exige cuidado adicional. Para categorias, uma variante adequada, como SMOTENC, pode ser necessária.
+
+---
+
+## 13. Análise de resíduos
+
+Resíduo de uma observação:
+
+$$
+e_i=y_i-\hat{y}_i
+$$
+
+### O que verificar
+
+| Diagnóstico | Comportamento desejado | Problema sugerido |
+|---|---|---|
+| Resíduo × predição | Nuvem sem padrão em torno de zero | Não linearidade ou variância não constante |
+| Resíduo × variável | Ausência de estrutura | Efeito omitido ou forma funcional inadequada |
+| Q-Q plot | Aproximação da reta, quando inferência exigir normalidade | Caudas ou assimetria nos erros |
+| Resíduo ao longo do tempo | Ausência de padrão | Autocorrelação ou mudança de regime |
+| Escala do resíduo | Aproximadamente constante | Heteroscedasticidade |
+| Alavancagem/Cook | Poucos pontos muito influentes | Estimativas dominadas por observações específicas |
+
+### Premissas clássicas da regressão linear
+
+- relação linear nos parâmetros;
+- erro condicional com média zero;
+- independência dos erros, quando aplicável;
+- homoscedasticidade para a inferência clássica;
+- ausência de multicolinearidade perfeita;
+- normalidade dos erros para testes e intervalos exatos em pequenas amostras.
+
+Possíveis correções incluem transformar variáveis, adicionar relações não lineares ou interações, usar erros-padrão robustos, regressão ponderada, modelos temporais ou modelos robustos.
+
+---
+
+## 14. Validação
+
+### Treino, validação e teste
+
+- **Treino:** aprende parâmetros e transformações.
+- **Validação:** escolhe modelo, variáveis, limiar e hiperparâmetros.
+- **Teste:** produz a estimativa final e deve permanecer intocado até o fim.
+
+### Principais estratégias
+
+| Estratégia | Funcionamento | Quando usar | Limitação |
+|---|---|---|---|
+| Holdout | Uma divisão entre treino e teste/validação | Bases grandes e iteração rápida | Resultado depende da divisão |
+| K-fold | Treina $k$ vezes, alternando o fold de validação | Uso geral em dados i.i.d. | Custo multiplicado por $k$ |
+| Stratified K-fold | Preserva aproximadamente a proporção das classes | Classificação desbalanceada | Não resolve dependência temporal ou de grupos |
+| Group K-fold | Mantém grupos inteiros em um lado da divisão | Pessoas, empresas, dispositivos | Pode gerar folds desiguais |
+| Leave-one-out | Usa uma observação por validação e as demais por treino | Bases muito pequenas | Muito caro e estimativa pode ter alta variância |
+| Repeated K-fold | Repete K-fold com divisões diferentes | Medir estabilidade | Maior custo |
+| Out-of-time | Treina no passado e avalia no futuro | Dados temporais | Menos dados e possível mudança de regime |
+| Nested CV | CV externa avalia; CV interna ajusta | Comparação menos enviesada | Alto custo |
+
+### Out-of-sample e out-of-time
+
+- **Out-of-sample** é o conceito amplo de avaliar em observações não usadas no ajuste.
+- **Out-of-time** é um out-of-sample com separação cronológica: treino no passado e avaliação no futuro.
+- **Out-of-time não deve ser embaralhado**, pois isso destruiria a simulação do uso real.
+
+### Escolha rápida
+
+- Muito dado estável: holdout pode bastar.
+- Pouco ou médio dado i.i.d.: K-fold.
+- Classes raras: Stratified K-fold.
+- Entidades repetidas: Group K-fold.
+- Série temporal: divisão cronológica ou *walk-forward*.
+- Seleção e avaliação rigorosa com poucos dados: nested CV.
+
+> “Out-of-sample” não é sinônimo obrigatório de uma única técnica; holdout, K-fold e out-of-time podem produzir avaliações fora da amostra.
+
+---
+
+## 15. Inferência, amostragem e incerteza
+
+### População e amostra
+
+- População é o conjunto sobre o qual se deseja concluir.
+- Amostra é o subconjunto observado.
+- Uma amostra grande não corrige viés de seleção.
+- O desenho amostral deve representar a população e o contexto de uso.
+
+### Intervalo de confiança
+
+Um intervalo de confiança expressa a incerteza de um procedimento de estimação. Em 95%, a interpretação frequencista correta é: se repetíssemos o processo muitas vezes, aproximadamente 95% dos intervalos construídos conteriam o parâmetro verdadeiro.
+
+### Teste de hipótese
+
+- $H_0$: hipótese nula.
+- $H_1$: hipótese alternativa.
+- Erro tipo I: rejeitar $H_0$ quando ela é verdadeira.
+- Erro tipo II: não rejeitar $H_0$ quando ela é falsa.
+- O p-valor não é a probabilidade de $H_0$ ser verdadeira e não mede tamanho de efeito.
+
+Sempre complemente significância com tamanho de efeito, intervalo de confiança, premissas e relevância prática.
+
+---
+
+## 16. Viés, variância e generalização
+
+| Situação | Treino | Validação/teste | Diagnóstico |
+|---|---:|---:|---|
+| Underfitting | Ruim | Ruim | Alto viés |
+| Overfitting | Muito bom | Ruim | Alta variância |
+| Bom equilíbrio | Bom | Próximo ao treino | Generalização adequada |
+
+Possíveis ações:
+
+- Alto viés: aumentar capacidade, criar variáveis melhores ou reduzir regularização excessiva.
+- Alta variância: simplificar, regularizar, coletar dados, usar ensembles ou melhorar validação.
+- Sempre comparar com baseline e verificar estabilidade entre folds, períodos e segmentos.
+
+---
+
+## 17. Pegadinhas frequentes
+
+1. **Dados precisam ser normais para todo modelo?** Não. A necessidade depende do método e do objetivo de inferência.
+2. **Padronização resolve outliers?** Não; apenas muda a escala.
+3. **Árvores precisam ser padronizadas?** Em geral, não.
+4. **VIF alto significa variável inútil?** Não; indica redundância linear com outras explicativas.
+5. **PCA escolhe as melhores variáveis para o alvo?** Não; maximiza variância sem usar o alvo.
+6. **Maior importância significa causalidade?** Não.
+7. **SMOTE pode ser aplicado antes do split?** Não; isso causa vazamento.
+8. **MAPE funciona bem com alvo zero?** Não; a divisão por zero ou valores próximos de zero é problemática.
+9. **R² alto garante bom modelo?** Não; verifique resíduos, validação, estabilidade e utilidade de negócio.
+10. **Teste pode ser usado para escolher hiperparâmetros?** Não; isso contamina a estimativa final.
+11. **LOOCV é sempre melhor por usar quase todos os dados?** Não; é caro e pode ter alta variância.
+12. **Remover todo outlier melhora o modelo?** Não; pode apagar eventos legítimos e introduzir viés.
+
+---
+
+## 18. Respostas curtas para sabatina
+
+### Como você prepara os dados sem vazamento?
+
+“Defino a divisão antes de aprender qualquer transformação. Imputação, escala, encoding, seleção, PCA e balanceamento são ajustados apenas no treino de cada fold e aplicados à validação por uma pipeline.”
+
+### Como você escolhe o tratamento de missing?
+
+“Primeiro investigo mecanismo e significado da ausência. Depois escolho uma estratégia compatível com distribuição, modelo e negócio, valido seu impacto e considero um indicador quando a ausência for informativa.”
+
+### Como você trata outliers?
+
+“Não removo automaticamente. Verifico erro de dados, evento legítimo ou mudança de população. Conforme o caso, corrijo, segmento, transformo, winsorizo ou uso modelo e perda robustos.”
+
+### Quando usar PCA?
+
+“Quando preciso reduzir dimensionalidade ou colinearidade e aceito perder interpretação. Ajusto a escala e o PCA apenas no treino e escolho componentes por validação, não só por variância explicada.”
+
+### Como lidar com classes desbalanceadas?
+
+“Escolho uma métrica e um limiar alinhados ao custo, avalio pesos de classe ou reamostragem e aplico qualquer balanceamento apenas dentro do treino de cada fold.”
+
+### Como escolher a validação?
+
+“A divisão deve reproduzir a produção. Uso estratificação para classes, grupos para entidades repetidas e separação cronológica para tempo. O conjunto de teste fica reservado para a avaliação final.”
+
+---
+
+## 19. Checklist final
+
+Antes da sabatina, confirme que consegue explicar sem consulta:
+
+- diferenças entre média, mediana, moda, variância, desvio-padrão e quartis;
+- premissas e exemplos das principais distribuições;
+- MCAR, MAR, MNAR e missing estrutural;
+- quando usar cada encoding, scaler e transformação;
+- por que VIF, PCA e feature importance respondem perguntas diferentes;
+- como detectar e tratar outliers sem criar viés;
+- por que SMOTE deve ficar dentro do treino;
+- o que os gráficos de resíduos revelam;
+- diferenças entre holdout, K-fold, LOOCV, out-of-sample e out-of-time;
+- como impedir vazamento de dados;
+- como ligar métrica, limiar e validação ao impacto de negócio.
+
+> Uma resposta forte de sabatina combina: **definição + intuição + premissa + limitação + ação prática**.
