@@ -336,3 +336,27 @@ O Gradient Boosting reduz bias porque constrói o modelo de forma sequencial, on
 Já o Random Forest reduz principalmente a variância, pois treina várias árvores independentes em amostras diferentes usando bagging e depois faz a média das previsões. Como as árvores do Random Forest normalmente já têm baixo bias, o ensemble reduz a variância, mas não altera muito o bias.
 
 ![Gráfico](img/Vies_variancia-Slide_5.png)
+
+## O que é Bagging e por que ele costuma reduzir a variância de uma árvore de decisão?
+Bagging, ou Bootstrap Aggregating, é uma técnica de ensemble em que treinamos vários modelos independentes, normalmente árvores, em diferentes amostras bootstrap do conjunto de treinamento. Depois agregamos suas previsões, usando votação na classificação ou média na regressão. Ele reduz principalmente a variância porque árvores individuais são instáveis e podem produzir previsões diferentes dependendo da amostra; ao agregar várias árvores, parte dessas variações se cancela. Quanto menos correlacionados forem os erros dos modelos, maior tende a ser o ganho. A seleção aleatória de features em cada split é uma característica adicional da Random Forest, e não do Bagging em geral.
+
+## Então qual é a principal diferença entre Bagging de árvores e Random Forest?
+No Bagging, treinamos várias árvores em diferentes amostras bootstrap e agregamos suas previsões. Na Random Forest, além do bootstrap das observações, cada split considera apenas um subconjunto aleatório das features. Essa aleatoriedade adicional reduz a correlação entre as árvores, aumentando a diversidade do ensemble e ajudando a reduzir a variância.
+
+Bagging
+→ bootstrap das observações
+→ modelos independentes
+→ agregação.
+Random Forest
+→ Bagging de árvores
++ subconjunto aleatório de features em cada split.
+
+## O que é bootstrap e por que aproximadamente 36,8% das observações ficam de fora de uma amostra bootstrap?
+Bootstrap: sorteio com reposição.
+Bootstrap consiste em criar uma nova amostra do mesmo tamanho do conjunto original fazendo sorteios com reposição. Como existe reposição, algumas observações aparecem várias vezes e outras não são selecionadas. Para N grande, aproximadamente 63,2% das observações originais aparecem pelo menos uma vez e aproximadamente 36,8% ficam de fora. Essas observações são chamadas de Out-of-Bag e podem ser utilizadas para estimar o desempenho de generalização.
+
+## O que é Out-of-Bag (OOB) e como ele pode ser utilizado para avaliar uma Random Forest?
+Out-of-Bag são as observações que não foram selecionadas na amostra bootstrap de uma determinada árvore. Como essa árvore não utilizou essas observações no treinamento, podemos usá-las para avaliar sua capacidade de generalização. Em uma Random Forest, cada árvore possui seu próprio conjunto OOB. Para uma observação, agregamos as previsões das árvores nas quais ela ficou OOB e podemos calcular uma métrica de desempenho, chamada OOB score. Isso fornece uma estimativa interna de generalização, embora não necessariamente substitua um conjunto de teste final independente.
+
+## Em uma Random Forest, o que acontece quando aumentamos muito o número de árvores (n_estimators)? Isso tende a causar overfitting?
+Em uma Random Forest, aumentar o número de árvores geralmente não causa overfitting relevante por si só. Como a previsão final é uma agregação das árvores, aumentar n_estimators tende a estabilizar o resultado e reduzir a variabilidade do ensemble. Depois de certo ponto, porém, o ganho de desempenho tende a ser pequeno, enquanto aumentam custo computacional, memória e tempo de inferência. Diferentemente de aumentar max_depth, aumentar n_estimators não aumenta da mesma forma a complexidade individual das árvores.

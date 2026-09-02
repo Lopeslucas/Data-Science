@@ -2,6 +2,7 @@
 
 ---
 # Pontos cobertos pelo questionario abaixo:
+- Relação Viés x Variância ✅
 - Relação Overfiting x Underfiting ✅
 - O que é Data Leakage ✅
 - Overfiting por alta variancia ✅
@@ -11,9 +12,18 @@
 - O que são Hiperparametros e como ajustar ✅
 - Correlação x Causalidade ✅
 - Maldição da Multidimensionalidade ✅
-
+- Modelos Parametricos x Nao parametricos ✅
+- Multicolinearidade ✅
+- fit, transform e fit_transform ✅
+- Correlação x Causalidade ✅
 
 ---
+
+## O que é viés e o que é variância em Machine Learning? E qual é a relação deles com underfitting e overfitting?
+Viés: erro sistemático causado por hipóteses simplificadoras do modelo.
+Variância: sensibilidade do modelo a mudanças na amostra de treinamento.
+
+Viés representa o erro sistemático de um modelo por ser simples demais ou fazer hipóteses muito restritivas. Variância representa o quanto o modelo muda quando treinado em diferentes amostras. Um modelo de alto viés e baixa variância tende a underfitting, porque não consegue capturar bem o padrão nem no treino. Um modelo de baixo viés e alta variância tende a overfitting, porque se ajusta muito ao treino, inclusive ao ruído, e perde desempenho em dados não vistos. O objetivo é encontrar um equilíbrio entre os dois para obter boa generalização.
 
 ## Overfitting x Underfitting
 Overfitting ocorre quando o modelo se ajusta excessivamente aos dados de treino, aprendendo inclusive o ruído, o que resulta em baixa capacidade de generalização e pior desempenho no conjunto de teste.
@@ -97,6 +107,9 @@ Já os parâmetros são valores internos do modelo que são aprendidos automatic
 
 Esses parâmetros são ajustados pelo algoritmo para minimizar a função de erro ou maximizar a função objetivo.
 
+# Qual é a diferença entre um parâmetro e um hiperparâmetro de um modelo de Machine Learning? Dê exemplos dos dois.
+Parâmetros são valores internos que o modelo aprende diretamente dos dados durante o treinamento, como os coeficientes de uma regressão linear ou os pesos de uma rede neural. Hiperparâmetros são configurações externas que controlam a estrutura ou o processo de treinamento, como k no KNN, max_depth em uma árvore, n_estimators em Random Forest ou a taxa de aprendizado. Eles podem ser definidos manualmente ou escolhidos por técnicas como Grid Search e Random Search
+
 ## Por que não devemos usar o conjunto de teste para escolher hiperparâmetros?
 O conjunto de teste deve ser usado apenas para a avaliação final do modelo, porque ele simula dados novos que o modelo nunca viu.
 
@@ -157,3 +170,51 @@ Conforme a dimensionalidade cresce:
 ## Como você lida com a multicolinearidade em seus dados?
 Eu normalmente identifico multicolinearidade usando matriz de correlação e VIF. Quando ela é alta, os coeficientes dos modelos lineares ficam instáveis e difíceis de interpretar. Para tratar isso, posso remover variáveis redundantes, criar novas features, usar regularização como Ridge ou Lasso, ou aplicar PCA quando existem muitas variáveis correlacionadas. Em modelos de árvore o impacto costuma ser menor, mas em regressões é um problema importante.
 
+
+## Qual é a diferença entre um modelo paramétrico e um modelo não paramétrico? Dê exemplos.
+Modelos paramétricos assumem uma forma funcional específica e possuem um número finito de parâmetros a serem estimados, como os coeficientes da regressão linear e logística ou os parâmetros de distribuição no Naive Bayes. Já modelos não paramétricos não assumem uma forma funcional fixa e sua complexidade pode aumentar conforme os dados, como ocorre em árvores de decisão e KNN.
+
+## Você treinou um modelo de classificação e obteve:
+- AUC treino: 0,96
+- AUC validação: 0,78
+- AUC teste: 0,77
+O que esses resultados sugerem? Quais seriam suas principais hipóteses para explicar esse comportamento e o que você faria para tentar corrigi-lo?
+
+Eu investigaria, nessa ordem:
+1. leakage e estratégia de split;
+2. complexidade do modelo;
+3. curva treino × validação;
+4. regularização, poda ou redução de complexidade;
+5. seleção de features;
+6. cross-validation;
+7. tuning usando treino/validação, sem tocar no teste;
+8. mais dados, se isso for viável.
+
+Os resultados sugerem overfitting, porque o modelo apresenta AUC de 0,96 no treino e aproximadamente 0,78 em dados não vistos. Como validação e teste estão próximos, a estimativa de generalização parece consistente. Eu investigaria primeiro vazamento de dados e a estratégia de split, depois excesso de complexidade, features ruidosas e hiperparâmetros. Para mitigar, poderia aumentar regularização, reduzir complexidade, fazer seleção de features, utilizar validação cruzada e ajustar os hiperparâmetros somente com treino e validação.
+
+## O que é multicolinearidade em um modelo de regressão? Como você pode detectá-la e quais problemas ela pode causar na interpretação dos coeficientes?
+Multicolinearidade acontece quando duas ou mais variáveis explicativas carregam informação muito semelhante entre si, o que dificulta separar o efeito individual de cada uma sobre a variável alvo.
+Também acertou os dois caminhos clássicos de detecção:
+- análise de correlação entre preditores;
+- VIF como diagnóstico mais direto.
+
+Multicolinearidade ocorre quando variáveis explicativas apresentam forte relação entre si, fazendo com que carreguem informação redundante. Ela pode ser investigada inicialmente por correlação e, de forma mais apropriada, pelo VIF. O principal impacto é dificultar a estimação do efeito individual das variáveis, aumentando o erro padrão e deixando os coeficientes instáveis, com possíveis mudanças de sinal, magnitude e significância.
+
+
+## Qual é a diferença entre fit, transform e fit_transform em um objeto de pré-processamento do scikit-learn? E por que, em um cenário de treino e teste, normalmente fazemos fit_transform no treino e apenas transform no teste?
+
+- fit → aprende parâmetros a partir dos dados;
+- transform → aplica a transformação usando aquilo que já foi aprendido;
+- fit_transform → faz as duas coisas em sequência.
+
+fit aprende os parâmetros da transformação a partir dos dados. transform aplica a transformação usando os parâmetros já aprendidos. fit_transform executa os dois processos em sequência. No treino, normalmente usamos fit_transform, enquanto no teste usamos apenas transform, para garantir que informações do teste não sejam utilizadas para definir os parâmetros do pré-processamento e evitar data leakage.
+
+## Qual é a diferença entre correlação e causalidade? Por que uma correlação alta entre duas variáveis não significa necessariamente que uma causa a outra? Dê pelo menos um exemplo de situação em que isso pode acontecer.
+Por que uma correlação pode existir sem causalidade.
+- uma terceira variável afetando as duas;
+- coincidência estatística;
+- causalidade reversa;
+- tendência temporal comum;
+- algum viés na coleta dos dados.
+
+Correlação mede o grau de associação entre duas variáveis, enquanto causalidade significa que uma mudança em uma variável produz efeito na outra. Uma correlação alta não prova causalidade porque a associação pode ser explicada por variáveis de confusão, causalidade reversa ou coincidência. Por exemplo, vendas de sorvete e casos de afogamento podem aumentar juntas, mas isso ocorre porque ambas são influenciadas por temperaturas mais altas.
