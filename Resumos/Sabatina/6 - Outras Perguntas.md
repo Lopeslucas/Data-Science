@@ -3,19 +3,24 @@
 ---
 # Pontos cobertos pelo questionario abaixo:
 - Relação Viés x Variância ✅
+- Relação Viés x Variância com tecnicas e Regularização ✅
 - Relação Overfiting x Underfiting ✅
+- Relação e erro e treino, validação e teste ✅
 - O que é Data Leakage ✅
 - Overfiting por alta variancia ✅
 - Validação Holdout e Cruzada ✅
 - Problemas causadas pela Multicolinearidade ✅
 - Como identificar Multicolinearidade ✅
 - O que são Hiperparametros e como ajustar ✅
+- Hiperparametros x Parametros ✅
 - Correlação x Causalidade ✅
 - Maldição da Multidimensionalidade ✅
 - Modelos Parametricos x Nao parametricos ✅
 - Multicolinearidade ✅
 - fit, transform e fit_transform ✅
 - Correlação x Causalidade ✅
+- Variavel Discreta Aleatoria  x Aleatoria Discreta Continua ✅
+- GridSearchCV e RandomizedSearchCV ✅
 
 ---
 
@@ -25,14 +30,31 @@ Variância: sensibilidade do modelo a mudanças na amostra de treinamento.
 
 Viés representa o erro sistemático de um modelo por ser simples demais ou fazer hipóteses muito restritivas. Variância representa o quanto o modelo muda quando treinado em diferentes amostras. Um modelo de alto viés e baixa variância tende a underfitting, porque não consegue capturar bem o padrão nem no treino. Um modelo de baixo viés e alta variância tende a overfitting, porque se ajusta muito ao treino, inclusive ao ruído, e perde desempenho em dados não vistos. O objetivo é encontrar um equilíbrio entre os dois para obter boa generalização.
 
+## O que é regularização e por que ela costuma aumentar o viés e reduzir a variância de um modelo?
+restrição maior → modelo menos flexível → viés ↑ → variância ↓
+
+Regularização adiciona uma penalização à função de custo para restringir a complexidade do modelo. Isso faz com que o modelo tenha menos liberdade para se ajustar às particularidades do conjunto de treino. Como consequência, normalmente aumentamos um pouco o viés, mas reduzimos a variância e o risco de overfitting. Em modelos lineares, Ridge reduz a magnitude dos coeficientes e Lasso pode inclusive zerar alguns deles.
+
+
 ## Overfitting x Underfitting
 Overfitting ocorre quando o modelo se ajusta excessivamente aos dados de treino, aprendendo inclusive o ruído, o que resulta em baixa capacidade de generalização e pior desempenho no conjunto de teste.
-
 Underfitting ocorre quando o modelo é simples demais para capturar o padrão dos dados, apresentando alto erro tanto no treino quanto no teste.
 
 Em termos de bias e variance, underfitting está associado a alto bias e baixa variância, enquanto overfitting está associado a baixa bias e alta variância.
-
 Para evitar overfitting podemos usar técnicas como regularização (L1/Lasso, L2/Ridge), validação cruzada, redução de features, aumento de dados e modelos menos complexos.
+
+## Qual é a diferença entre erro de treino, erro de validação e erro de teste? Qual é o papel específico de cada conjunto durante o desenvolvimento de um modelo?
+Erro de treino alto + erro de validação alto
+→ possível underfitting.
+Erro de treino muito baixo + erro de validação/teste bem maior
+→ possível overfitting.
+
+Então o papel dos conjuntos é:
+- Treino: usado para ajustar os parâmetros do modelo.
+- Validação: usado para escolher hiperparâmetros, comparar modelos, thresholds e decisões de pipeline.
+- Teste: deve ficar intocado até o final e serve para estimar a capacidade de generalização do modelo escolhido.
+
+O conjunto de treino é usado para ajustar os parâmetros do modelo. O conjunto de validação é usado durante o desenvolvimento para escolher hiperparâmetros, comparar modelos e tomar decisões de modelagem. O conjunto de teste deve permanecer separado até o final e serve para estimar a performance em dados não vistos. Underfitting e overfitting são diagnosticados comparando esses erros: erro alto até no treino sugere underfitting, enquanto erro muito baixo no treino e maior em validação ou teste sugere overfitting.
 
 ## Data leakage
 Data leakage é quando o modelo tem acesso a informações que não estariam disponíveis no momento da predição, o que faz com que ele aprenda padrões irreais e tenha uma performance inflada.
@@ -75,6 +97,9 @@ A validação cruzada é mais usada quando temos poucos dados, pois permite melh
 
 O holdout é mais usado quando temos muitos dados ou quando o custo computacional é alto, pois é mais rápido.
 
+## Qual é a diferença entre validação cruzada K-Fold e Stratified K-Fold? Em quais situações você preferiria o Stratified K-Fold?
+K-Fold divide os dados em K partes e alterna cada fold como conjunto de validação. Stratified K-Fold faz a mesma coisa, mas preserva aproximadamente a proporção das classes em cada fold. Eu prefiro Stratified K-Fold em problemas de classificação, principalmente quando existe desbalanceamento entre as classes.
+
 ## Por que não é uma boa ideia avaliar o modelo só com um único split de treino e teste?
 Avaliar o modelo com um único split de treino e teste pode gerar uma avaliação pouco confiável, porque essa divisão pode não ser representativa dos dados. Isso significa que a performance pode variar bastante dependendo de como os dados foram divididos, gerando métricas instáveis ou até otimistas demais.
 
@@ -111,13 +136,9 @@ Esses parâmetros são ajustados pelo algoritmo para minimizar a função de err
 Parâmetros são valores internos que o modelo aprende diretamente dos dados durante o treinamento, como os coeficientes de uma regressão linear ou os pesos de uma rede neural. Hiperparâmetros são configurações externas que controlam a estrutura ou o processo de treinamento, como k no KNN, max_depth em uma árvore, n_estimators em Random Forest ou a taxa de aprendizado. Eles podem ser definidos manualmente ou escolhidos por técnicas como Grid Search e Random Search
 
 ## Por que não devemos usar o conjunto de teste para escolher hiperparâmetros?
-O conjunto de teste deve ser usado apenas para a avaliação final do modelo, porque ele simula dados novos que o modelo nunca viu.
+O conjunto de teste deve ser usado apenas para a avaliação final do modelo, porque ele simula dados novos que o modelo nunca viu. Se a gente usa o conjunto de teste para escolher hiperparâmetros, a gente acaba ajustando o modelo com base nesses dados, e isso gera data leakage.
 
-Se a gente usa o conjunto de teste para escolher hiperparâmetros, a gente acaba ajustando o modelo com base nesses dados, e isso gera data leakage.
-
-Nesse caso, o modelo pode ficar com uma métrica muito boa no teste, mas quando for para produção ele perde desempenho, porque ele acabou se adaptando ao conjunto de teste.
-
-O mais correto é separar em treino, validação e teste, onde o treino é usado para ajustar o modelo, a validação para escolher hiperparâmetros, e o teste apenas para a avaliação final.
+Nesse caso, o modelo pode ficar com uma métrica muito boa no teste, mas quando for para produção ele perde desempenho, porque ele acabou se adaptando ao conjunto de teste. O mais correto é separar em treino, validação e teste, onde o treino é usado para ajustar o modelo, a validação para escolher hiperparâmetros, e o teste apenas para a avaliação final.
 
 
 ## O que é cross-validation e por que usar?
@@ -218,3 +239,20 @@ Por que uma correlação pode existir sem causalidade.
 - algum viés na coleta dos dados.
 
 Correlação mede o grau de associação entre duas variáveis, enquanto causalidade significa que uma mudança em uma variável produz efeito na outra. Uma correlação alta não prova causalidade porque a associação pode ser explicada por variáveis de confusão, causalidade reversa ou coincidência. Por exemplo, vendas de sorvete e casos de afogamento podem aumentar juntas, mas isso ocorre porque ambas são influenciadas por temperaturas mais altas.
+
+## Qual é a diferença entre uma variável aleatória discreta e uma variável aleatória contínua? Dê um exemplo de cada e explique como isso se relaciona com função de probabilidade/densidade.
+Uma variável aleatória discreta assume valores contáveis, como o número de filhos de uma pessoa, que pode ser 0, 1, 2, 3 etc. Para ela, podemos atribuir uma probabilidade diretamente a cada valor. Já uma variável aleatória contínua pode assumir qualquer valor dentro de um intervalo, como altura ou temperatura. Nesse caso, trabalhamos com uma função densidade, e a probabilidade é associada a intervalos, já que a probabilidade de um valor contínuo específico é zero.
+
+## Qual é a diferença entre GridSearchCV e RandomizedSearchCV? Em que cenário você preferiria um ao outro e por que o tuning deve ser feito dentro da validação cruzada, e não usando o conjunto de teste?
+GridSearchCV é interessante quando:
+- poucos hiperparâmetros;
+- poucos valores candidatos;
+- espaço de busca pequeno;
+- queremos testar todas as combinações definidas.
+RandomizedSearchCV costuma ser melhor quando:
+- existem muitos hiperparâmetros;
+- o espaço de busca é grande;
+- parâmetros são contínuos;
+- temos orçamento computacional limitado.
+
+GridSearchCV testa exaustivamente todas as combinações definidas em uma grade de hiperparâmetros. RandomizedSearchCV testa apenas uma quantidade definida de combinações amostradas aleatoriamente, sendo mais eficiente quando o espaço de busca é grande. Eu usaria Grid Search em espaços pequenos e Randomized Search quando há muitos hiperparâmetros ou valores possíveis. O tuning deve ocorrer dentro da validação cruzada usando apenas os dados de treino, deixando o conjunto de teste intocado para uma avaliação final e imparcial da capacidade de generalização.

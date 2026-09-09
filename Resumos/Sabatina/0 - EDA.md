@@ -8,6 +8,7 @@
 - Medidas de Centralidade ✅
 - Distribuição Assimetrica ✅
 - Analise de variaveis Categoricas e Numericas ✅
+- Correlação de Person x Spearman ✅
 
 ---
 ## Explique como você começa um EDA do zero em uma base nova.
@@ -100,3 +101,9 @@ Isso causa data leakage porque a mediana foi calculada usando também informaç�
 
 ## O que é multicolinearidade, qual problema ela causa e como você a identificaria?
 Multicolinearidade ocorre quando uma variável explicativa possui forte relação linear com uma ou mais variáveis explicativas. Isso aumenta a variância dos coeficientes, tornando-os instáveis, com erros-padrão elevados e interpretação pouco confiável. Eu começaria com uma matriz de correlação e aprofundaria usando VIF, que mede quanto a variância de cada coeficiente está inflada pela relação com as demais variáveis.
+
+## O que é multicolinearidade e por que um VIF alto não significa necessariamente que uma variável é pouco importante para o modelo?
+Multicolinearidade ocorre quando existe forte relação linear entre os preditores, aumentando a variância e a instabilidade dos coeficientes. Podemos investigá-la com correlação e VIF. Um VIF alto não significa que a variável seja pouco importante para prever o target; significa que parte da informação dessa variável é redundante com outras features, dificultando isolar seu efeito individual.
+
+## Qual é a diferença entre correlação de Pearson e Spearman? Em que tipo de relação ou dado você preferiria usar Spearman em vez de Pearson?
+Pearson mede correlação linear usando os valores originais das variáveis. Spearman mede associação monotônica usando os postos dos valores. Eu preferiria Spearman quando os dados são ordinais, quando a relação é monotônica mas não necessariamente linear, ou quando quero reduzir a influência de outliers. Nenhum dos dois, isoladamente, detecta toda forma de dependência não linear.

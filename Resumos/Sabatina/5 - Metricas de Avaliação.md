@@ -34,6 +34,8 @@ Enquanto a accuracy avalia apenas a predição final, o AUC avalia a capacidade 
 
 Além disso, a accuracy pode ser enganosa em datasets desbalanceados, enquanto o AUC continua sendo uma boa métrica para avaliar o poder de discriminação do modelo.
 
+## Qual é a diferença entre ROC-AUC e PR-AUC (Precision-Recall AUC)? Em um cenário tão desbalanceado, por que a PR-AUC pode ser mais informativa que a ROC-AUC?
+ROC-AUC avalia a relação entre taxa de verdadeiro positivo e taxa de falso positivo ao variar o threshold. Já PR-AUC avalia Precision e Recall. Em bases muito desbalanceadas, a ROC-AUC pode parecer boa porque a enorme quantidade de negativos torna o FPR relativamente pequeno. A PR-AUC tende a ser mais informativa porque mostra diretamente a capacidade do modelo de encontrar a classe positiva mantendo uma Precision aceitável.
 
 ## O que é KS e por que ele é muito usado em crédito?
 KS é uma métrica que mede a máxima diferença entre a distribuição acumulada das classes positivas e negativas.
@@ -138,3 +140,6 @@ Exemplo: um modelo que bloqueia automaticamente contas por suspeita de fraude.
 - Consequência: bloqueio indevido, cliente sem acesso ao dinheiro, reclamações e dano reputacional.
 
 Eu priorizaria precision quando uma previsão positiva provocar uma ação severa, como o bloqueio automático de uma conta. Uma precision baixa geraria muitos falsos positivos, bloqueando clientes legítimos. Portanto, eu exigiria maior confiança antes de tomar essa ação.
+
+## Qual é a diferença entre MAE e RMSE? Qual das duas é mais sensível a erros grandes/outliers e em que tipo de situação você escolheria uma em vez da outra?
+MAE é a média dos erros absolutos e trata os erros de forma linear, sendo mais robusta a outliers. RMSE é a raiz da média dos erros ao quadrado e penaliza mais fortemente erros grandes, sendo mais sensível a valores extremos. Eu usaria MAE quando quero representar o erro típico de forma mais robusta e RMSE quando erros grandes têm custo maior

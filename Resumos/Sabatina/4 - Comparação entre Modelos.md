@@ -137,4 +137,5 @@ Extrapolar = prever fora da região dos dados de treino.
 
 Já modelos lineares aprendem uma função e conseguem extrapolar para valores fora do intervalo do treino.
 
-## 
+## Em um problema de classificação binária, qual é a função de custo mais comum da regressão logística? Por que normalmente não usamos MSE como primeira escolha nesse modelo?
+Na regressão logística binária, a função de custo mais comum é a Log Loss, ou Binary Cross-Entropy. Ela compara a probabilidade prevista com a classe real e penaliza fortemente previsões incorretas feitas com alta confiança. Ela é mais adequada que o MSE porque está diretamente relacionada à máxima verossimilhança de uma variável Bernoulli e à natureza probabilística da regressão logística.

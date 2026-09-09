@@ -15,3 +15,6 @@ Um segundo efeito é que, para preencher adequadamente um espaço de muitas dime
 
 ## Qual é a diferença entre distância Euclidiana, Manhattan e Minkowski no KNN?
 A distância Euclidiana mede a distância em linha reta e é um caso da Minkowski com p = 2. A Manhattan soma as diferenças absolutas entre os atributos e corresponde à Minkowski com p = 1. A Minkowski é uma generalização das duas e permite controlar a métrica pelo parâmetro p.
+
+## Por que o KNN sofre com a maldição da dimensionalidade? O que acontece com as distâncias quando o número de features cresce muito e como você poderia mitigar esse problema?
+O KNN sofre com a maldição da dimensionalidade porque, à medida que o número de features aumenta, o espaço se torna mais esparso e as distâncias entre as observações tendem a ficar mais semelhantes. Com isso, a noção de vizinho próximo perde poder discriminativo, prejudicando a predição. Podemos mitigar o problema com seleção de features, redução de dimensionalidade como PCA e, quando possível, maior quantidade de dados. Também é importante fazer scaling, porque o KNN depende diretamente das distâncias

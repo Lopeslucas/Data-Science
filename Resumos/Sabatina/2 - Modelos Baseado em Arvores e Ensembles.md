@@ -45,6 +45,7 @@ Ensemble (Random Forrest + Tecnica de Bagging x Boosting)
 - Quais as principais diferenças entre Bagging x Boosting ✅
 - Por que o Boosting é sensivel ao Overfiting ✅
 - Relação Vies Variancia nos modelos Ensemble ✅
+- Parametro max_features ✅
 
 ---
 # Árvores 
@@ -164,6 +165,8 @@ Isso torna a árvore um modelo de alta variância, pois pequenas mudanças nos d
 Por isso é necessário controlar a complexidade usando parâmetros como max_depth, min_samples_leaf e min_samples_split.
 
 
+## Em uma árvore de decisão de classificação, qual é a diferença entre max_depth, min_samples_split e min_samples_leaf? Como aumentar ou diminuir cada um tende a afetar overfitting, viés e variância?
+max_depth limita a profundidade da árvore, min_samples_split define quantas observações um nó precisa ter para poder ser dividido e min_samples_leaf define o mínimo permitido em uma folha. Aumentar a profundidade ou permitir splits e folhas muito pequenos aumenta a flexibilidade, reduz o viés e aumenta a variância, elevando o risco de overfitting. Restringir a profundidade ou aumentar os mínimos simplifica a árvore, reduz a variância e aumenta o viés, podendo levar a underfitting.
 
 ---
 # Ensemble 
@@ -360,3 +363,24 @@ Out-of-Bag são as observações que não foram selecionadas na amostra bootstra
 
 ## Em uma Random Forest, o que acontece quando aumentamos muito o número de árvores (n_estimators)? Isso tende a causar overfitting?
 Em uma Random Forest, aumentar o número de árvores geralmente não causa overfitting relevante por si só. Como a previsão final é uma agregação das árvores, aumentar n_estimators tende a estabilizar o resultado e reduzir a variabilidade do ensemble. Depois de certo ponto, porém, o ganho de desempenho tende a ser pequeno, enquanto aumentam custo computacional, memória e tempo de inferência. Diferentemente de aumentar max_depth, aumentar n_estimators não aumenta da mesma forma a complexidade individual das árvores.
+
+## Qual é a diferença entre Bagging e Random Forest? E por que a aleatoriedade adicional da Random Forest tende a melhorar o ensemble?
+Bagging treina vários modelos de forma independente em amostras bootstrap e agrega suas previsões, geralmente por voto na classificação ou média na regressão. Random Forest é uma aplicação de bagging com árvores de decisão, adicionando também um subconjunto aleatório de features considerado em cada split. Essa aleatoriedade reduz a correlação entre as árvores, aumenta a diversidade do ensemble e ajuda a reduzir a variância, tornando o modelo mais estável do que uma árvore isolada.
+
+## Em Random Forest, qual é a função do hiperparâmetro max_features? O que tende a acontecer se utilizarmos um valor muito alto ou muito baixo?
+Se max_features for muito alto:
+- cada árvore enxerga muitas das mesmas features fortes;
+- as árvores tendem a ficar mais parecidas entre si;
+- a correlação entre elas aumenta;
+- o ganho do ensemble por diversidade diminui;
+- a variância do ensemble pode ficar maior.
+No limite, se todas as features forem consideradas em todos os splits, você se aproxima de um Bagging de árvores.
+
+Se max_features for muito baixo:
+- aumenta bastante a diversidade entre árvores;
+- reduz a correlação entre elas;
+- mas cada árvore pode ficar individualmente mais fraca, porque às vezes boas features nem entram como candidatas naquele split;
+- isso pode aumentar viés e piorar desempenho se exagerarmos.
+
+max_features define quantas variáveis são consideradas como candidatas em cada split da Random Forest. Valores altos tornam as árvores individualmente mais fortes, mas também mais parecidas e correlacionadas, reduzindo a diversidade do ensemble. Valores muito baixos aumentam a diversidade e reduzem correlação, mas podem enfraquecer demais as árvores porque features relevantes podem não estar disponíveis em determinados splits. O ideal é equilibrar força individual e diversidade.
+

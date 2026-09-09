@@ -39,7 +39,8 @@ Como lidar com as desvantagens
 - Calculo de VIF ✅
 - Tecnicas de Regularização: Lasso (L1), Ridge (L2) e Elastic Net ✅
 - Por que modelos Lineares precisam de Normalização dos Dados ✅
-
+- Interpretação do p-valor ✅
+- R² e R² ajustado ✅
 
 ---
 # Perguntas e respostas:
@@ -147,6 +148,9 @@ Técnicas como regularização L1 e L2 ajudam a reduzir esse problema, penalizan
 ![Gráfico](img/RL_multicolinearidade.png)
 
 
+## Em regressão linear, qual é a diferença entre heterocedasticidade e multicolinearidade? Como você detectaria cada uma e qual é o principal impacto de cada problema no modelo?
+Heterocedasticidade ocorre quando a variância dos erros não é constante ao longo das observações. Pode ser identificada por resíduos versus valores ajustados e testes como Breusch-Pagan. Ela prejudica principalmente os erros-padrão e, consequentemente, testes de hipótese e intervalos de confiança. Já multicolinearidade ocorre quando existe forte relação linear entre os preditores. Pode ser investigada por correlação e VIF. Ela aumenta a variância e os erros-padrão dos coeficientes, tornando-os instáveis e dificultando a interpretação individual das variáveis.
+
 ## O que significa uma variável apresentar VIF alto e o que você faria nesse caso?
 VIF alto indica que uma feature pode ser explicada linearmente pelas demais, inflando a variância e tornando seu coeficiente instável. Eu investigaria as variáveis envolvidas e, conforme o objetivo, removeria a menos relevante, combinaria features, aplicaria Ridge ou usaria PCA. A decisão consideraria desempenho, estabilidade e interpretabilidade
 
@@ -212,6 +216,7 @@ Embora a Lasso faça seleção automática de variáveis, a Ridge costuma lidar 
 As duas técnicas usam um hiperparâmetro, geralmente chamado de lambda ou alpha, que controla a força da penalização. Quanto maior a penalização, menor a variância, mas maior o viés, então existe um trade-off entre overfitting e underfitting.
 
 
+
 ## O que acontece com a função de custo quando adicionamos regularização em modelos lineares?
 Quando adicionamos regularização em modelos lineares, a função de custo passa a ter não só o erro do modelo, mas também um termo de penalização dos coeficientes. Ou seja, o modelo não tenta apenas minimizar o erro, mas também tenta manter os coeficientes menores, para evitar que o modelo fique muito complexo.
 
@@ -232,3 +237,9 @@ Além disso, métodos de otimização e regularização, como L1 e L2, também s
 Já as árvores de decisão não precisam de normalização porque elas não fazem cálculo baseado em distância ou coeficiente, elas apenas testam divisões usando thresholds, como maior ou menor que um valor.
 
 Como a divisão é feita por comparação, a escala da variável não influencia o resultado, então árvores conseguem lidar bem com variáveis em escalas diferentes.
+
+## Em uma regressão linear, o que significa um p-valor pequeno para o coeficiente de uma variável? E por que dizer que p < 0,05 significa que “há 95% de probabilidade de a variável ser importante” está errado?
+Na regressão linear, o p-valor de um coeficiente normalmente testa a hipótese nula de que esse coeficiente é igual a zero. Um p-valor pequeno indica que os dados observados seriam pouco compatíveis com essa hipótese, fornecendo evidência estatística de associação entre a variável e o alvo, mantendo as demais constantes. Porém, p menor que 0,05 não significa 95% de probabilidade de a variável ser importante ou de a hipótese alternativa ser verdadeira
+
+## Em regressão linear, qual é a diferença entre R² e R² ajustado? Por que o R² ajustado pode diminuir quando adicionamos uma nova variável ao modelo?
+R² mede quanto da variabilidade do alvo o modelo explica em relação ao baseline da média. O problema é que ele tende a aumentar ou permanecer igual quando adicionamos novas variáveis. O R² ajustado corrige isso penalizando a complexidade do modelo. Por isso, se uma nova variável não acrescentar informação suficiente para compensar essa penalização, o R² ajustado pode diminuir.
