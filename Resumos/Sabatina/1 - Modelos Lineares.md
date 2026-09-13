@@ -32,6 +32,7 @@ Como lidar com as desvantagens
 ---
 # Pontos cobertos pelo questionario abaixo:
 - Premissas da Regressão Linear ✅
+- Impacto dos outliers nos modelos de regressao linear
 - Como identificar Homocedasticidade/ Heterocedasticidade ✅
 - Transformação Logarítmica ✅
 - Diferenças entre Regressão Linear x Regressão Logistica ✅
@@ -53,6 +54,9 @@ A regressão linear assume algumas premissas importantes.
 4. Normalidade dos resíduos, que é importante principalmente para inferência estatística.
 5. Ausência de multicolinearidade forte entre as variáveis explicativas, pois isso pode tornar os coeficientes instáveis.
 6. Quando essas premissas são violadas, podemos ter problemas como coeficientes não confiáveis, pior generalização ou inferências incorretas.
+
+## Em regressão linear, por que um outlier pode influenciar muito os coeficientes estimados pelo método dos mínimos quadrados?
+O MQO é sensível a outliers porque minimiza a soma dos resíduos ao quadrado. Como erros grandes são elevados ao quadrado, observações extremas podem ter peso desproporcional na função objetivo e puxar a reta, alterando os coeficientes. Pontos extremos nas variáveis explicativas também podem ter alto leverage e ser especialmente influentes
 
 ## O que é Heterocedasticidade x Homocedasticidade?
 Esses conceitos estão relacionados ao comportamento dos resíduos (erros) do modelo. Homocedasticidade significa que os resíduos possuem variância constante ao longo das predições do modelo, enquanto heterocedasticidade ocorre quando essa variância muda. 

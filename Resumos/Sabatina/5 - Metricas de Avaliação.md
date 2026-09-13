@@ -143,3 +143,17 @@ Eu priorizaria precision quando uma previsão positiva provocar uma ação sever
 
 ## Qual é a diferença entre MAE e RMSE? Qual das duas é mais sensível a erros grandes/outliers e em que tipo de situação você escolheria uma em vez da outra?
 MAE é a média dos erros absolutos e trata os erros de forma linear, sendo mais robusta a outliers. RMSE é a raiz da média dos erros ao quadrado e penaliza mais fortemente erros grandes, sendo mais sensível a valores extremos. Eu usaria MAE quando quero representar o erro típico de forma mais robusta e RMSE quando erros grandes têm custo maior
+
+## Imagine que você treinou uma regressão linear e encontrou R² alto, mas também RMSE alto. Isso é contraditório? Como um modelo pode apresentar R² alto e, ao mesmo tempo, erros absolutos grandes?
+Não é contraditório. O R² mede quanto da variabilidade do target o modelo explica em relação ao baseline da média, enquanto o RMSE mede o tamanho absoluto dos erros na unidade do target. Se o target tiver grande dispersão, o modelo pode explicar uma proporção alta dessa variabilidade e ainda assim cometer erros absolutos grandes.”
+
+
+## Em um problema de classificação binária, seu modelo retorna probabilidades e você reduz o threshold de decisão de 0,5 para 0,3.
+Quando diminuímos o threshold:
+- mais observações passam a ser classificadas como positivas;
+- normalmente capturamos mais verdadeiros positivos → Recall tende a aumentar;
+- mas também tendemos a aceitar mais falsos positivos → Precision tende a diminuir.
+
+Ao reduzir o threshold de 0,5 para 0,3, o modelo passa a classificar mais observações como positivas. Com isso, tende a reduzir falsos negativos e aumentar o recall. Por outro lado, também pode aumentar falsos positivos, fazendo a precision tender a cair.”
+Frase para guardar:
+Threshold baixo → modelo mais permissivo → Recall ↑, Precision tende ↓.
