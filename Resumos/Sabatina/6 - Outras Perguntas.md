@@ -21,6 +21,8 @@
 - Correlação x Causalidade ✅
 - Variavel Discreta Aleatoria  x Aleatoria Discreta Continua ✅
 - GridSearchCV e RandomizedSearchCV ✅
+- Qual é a diferença entre erro aleatório, resíduo e erro de previsão em um modelo de regressão? ✅
+
 
 ---
 
@@ -256,3 +258,5 @@ RandomizedSearchCV costuma ser melhor quando:
 - temos orçamento computacional limitado.
 
 GridSearchCV testa exaustivamente todas as combinações definidas em uma grade de hiperparâmetros. RandomizedSearchCV testa apenas uma quantidade definida de combinações amostradas aleatoriamente, sendo mais eficiente quando o espaço de busca é grande. Eu usaria Grid Search em espaços pequenos e Randomized Search quando há muitos hiperparâmetros ou valores possíveis. O tuning deve ocorrer dentro da validação cruzada usando apenas os dados de treino, deixando o conjunto de teste intocado para uma avaliação final e imparcial da capacidade de generalização.
+
+## Qual é a diferença entre erro aleatório, resíduo e erro de previsão em um modelo de regressão?

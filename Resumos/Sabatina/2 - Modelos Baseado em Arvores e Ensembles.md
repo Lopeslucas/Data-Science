@@ -134,6 +134,14 @@ Já a pós-poda acontece depois que a árvore já foi construída, removendo alg
 
 Essas técnicas ajudam a controlar a complexidade da árvore e melhorar a generalização.
 
+## Uma árvore de decisão está sofrendo overfitting.
+Você decide:
+- diminuir max_depth;
+- aumentar min_samples_leaf.
+O que essas duas alterações fazem com a complexidade, o viés e a variância da árvore?
+
+Diminuir max_depth e aumentar min_samples_leaf tornam a árvore menos complexa. Com isso, a variância tende a diminuir e o viés tende a aumentar. Essas alterações ajudam a reduzir overfitting, embora valores muito restritivos possam levar a underfitting
+
 
 ## Como árvores de decisão fazem split em variáveis categóricas e variáveis numéricas?
 A árvore de decisão faz os splits avaliando todas as possíveis divisões das variáveis e escolhendo aquela que minimiza a função de custo naquele momento.

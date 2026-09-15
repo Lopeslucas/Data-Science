@@ -133,6 +133,9 @@ Ela costuma ser útil quando:
 - a variância cresce conforme aumenta o valor esperado de \(y\).
 Porém, o log não resolve toda heterocedasticidade. É necessário verificar novamente os resíduos depois da transformação. O log comprime os valores altos da variável-alvo e pode estabilizar a variância quando a magnitude dos erros cresce proporcionalmente ao valor de \(y\). Depois da transformação, eu repetiria o diagnóstico dos resíduos para verificar se houve melhora
 
+## Em uma regressão linear, o modelo apresenta resíduos em formato de funil: a dispersão dos resíduos aumenta conforme o valor previsto aumenta. Qual problema isso sugere? E por que isso é relevante para o modelo?
+Um gráfico de resíduos em formato de funil sugere heterocedasticidade, ou seja, a variância dos erros não é constante ao longo dos valores previstos. Isso viola uma das hipóteses clássicas do OLS e pode tornar os erros-padrão, p-valores e intervalos de confiança tradicionais pouco confiáveis. Podemos investigar transformações, erros-padrão robustos ou WLS, dependendo do objetivo da análise.
+
 ## Qual a diferença entre regressão linear e regressão logística, e por que não podemos usar regressão linear para classificação?
 A regressão linear modela uma relação linear entre as variáveis independentes e a variável alvo, estimando valores contínuos e minimizando o erro quadrático médio.
 

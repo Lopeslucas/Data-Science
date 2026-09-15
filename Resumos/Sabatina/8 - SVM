@@ -1,0 +1,10 @@
+# SVM
+
+---
+# Pontos cobertos pelo questionario abaixo:
+- Embeddings e banco vetorial ✅
+
+
+---
+## No SVM, o que significa maximizar a margem entre as classes? E qual é o papel dos support vectors nessa construção da fronteira de decisão?
+O SVM busca uma fronteira de decisão que maximize a margem entre as classes, isto é, maximize a distância entre a fronteira e os pontos mais próximos de cada classe. Esses pontos mais próximos são os support vectors e são eles que determinam diretamente a posição e a orientação da fronteira de decisão.
