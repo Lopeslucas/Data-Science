@@ -1,4 +1,4 @@
-# SVM
+# SVM + XGBoost
 
 ---
 # Pontos cobertos pelo questionario abaixo:
@@ -8,3 +8,11 @@
 ---
 ## No SVM, o que significa maximizar a margem entre as classes? E qual é o papel dos support vectors nessa construção da fronteira de decisão?
 O SVM busca uma fronteira de decisão que maximize a margem entre as classes, isto é, maximize a distância entre a fronteira e os pontos mais próximos de cada classe. Esses pontos mais próximos são os support vectors e são eles que determinam diretamente a posição e a orientação da fronteira de decisão.
+
+
+
+---
+# XGBoost
+
+## No XGBoost, qual é o papel do learning_rate e como ele se relaciona com o n_estimators?
+No XGBoost, o learning rate controla o tamanho da contribuição de cada nova árvore ao ensemble. Um learning rate menor torna o aprendizado mais gradual e geralmente exige um número maior de árvores. Um learning rate mais alto permite usar menos árvores, mas pode tornar o ajuste agressivo e aumentar o risco de overfitting. Por isso, learning_rate e n_estimators devem ser ajustados conjuntamente.

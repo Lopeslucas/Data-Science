@@ -1,4 +1,4 @@
-# Metricas de Avaliação
+# Metricas de Classificiação
 
 ## COMO E QUANDO USAR CADA MÉTRICA DE AVALIAÇÃO - CASOS PRÁTICOS EM BANCO
 
@@ -36,6 +36,8 @@ Além disso, a accuracy pode ser enganosa em datasets desbalanceados, enquanto o
 
 ## Qual é a diferença entre ROC-AUC e PR-AUC (Precision-Recall AUC)? Em um cenário tão desbalanceado, por que a PR-AUC pode ser mais informativa que a ROC-AUC?
 ROC-AUC avalia a relação entre taxa de verdadeiro positivo e taxa de falso positivo ao variar o threshold. Já PR-AUC avalia Precision e Recall. Em bases muito desbalanceadas, a ROC-AUC pode parecer boa porque a enorme quantidade de negativos torna o FPR relativamente pequeno. A PR-AUC tende a ser mais informativa porque mostra diretamente a capacidade do modelo de encontrar a classe positiva mantendo uma Precision aceitável.
+
+A ROC-AUC mede a capacidade de separação entre as classes ao longo de diferentes thresholds, usando TPR e FPR. Já a PR-AUC avalia Precision e Recall. Em problemas com classe positiva muito rara, a PR-AUC costuma ser mais informativa porque se concentra diretamente no desempenho sobre os positivos e é mais sensível ao impacto dos falsos positivos.
 
 ## O que é KS e por que ele é muito usado em crédito?
 KS é uma métrica que mede a máxima diferença entre a distribuição acumulada das classes positivas e negativas.
@@ -141,13 +143,6 @@ Exemplo: um modelo que bloqueia automaticamente contas por suspeita de fraude.
 
 Eu priorizaria precision quando uma previsão positiva provocar uma ação severa, como o bloqueio automático de uma conta. Uma precision baixa geraria muitos falsos positivos, bloqueando clientes legítimos. Portanto, eu exigiria maior confiança antes de tomar essa ação.
 
-## Qual é a diferença entre MAE e RMSE? Qual das duas é mais sensível a erros grandes/outliers e em que tipo de situação você escolheria uma em vez da outra?
-MAE é a média dos erros absolutos e trata os erros de forma linear, sendo mais robusta a outliers. RMSE é a raiz da média dos erros ao quadrado e penaliza mais fortemente erros grandes, sendo mais sensível a valores extremos. Eu usaria MAE quando quero representar o erro típico de forma mais robusta e RMSE quando erros grandes têm custo maior
-
-## Imagine que você treinou uma regressão linear e encontrou R² alto, mas também RMSE alto. Isso é contraditório? Como um modelo pode apresentar R² alto e, ao mesmo tempo, erros absolutos grandes?
-Não é contraditório. O R² mede quanto da variabilidade do target o modelo explica em relação ao baseline da média, enquanto o RMSE mede o tamanho absoluto dos erros na unidade do target. Se o target tiver grande dispersão, o modelo pode explicar uma proporção alta dessa variabilidade e ainda assim cometer erros absolutos grandes.”
-
-
 ## Em um problema de classificação binária, seu modelo retorna probabilidades e você reduz o threshold de decisão de 0,5 para 0,3.
 Quando diminuímos o threshold:
 - mais observações passam a ser classificadas como positivas;
@@ -157,3 +152,22 @@ Quando diminuímos o threshold:
 Ao reduzir o threshold de 0,5 para 0,3, o modelo passa a classificar mais observações como positivas. Com isso, tende a reduzir falsos negativos e aumentar o recall. Por outro lado, também pode aumentar falsos positivos, fazendo a precision tender a cair.”
 Frase para guardar:
 Threshold baixo → modelo mais permissivo → Recall ↑, Precision tende ↓.
+
+---
+# Metricas de Regressão
+
+## Qual é a diferença entre MAE e RMSE? Qual das duas é mais sensível a erros grandes/outliers e em que tipo de situação você escolheria uma em vez da outra?
+MAE é a média dos erros absolutos e trata os erros de forma linear, sendo mais robusta a outliers. RMSE é a raiz da média dos erros ao quadrado e penaliza mais fortemente erros grandes, sendo mais sensível a valores extremos. Eu usaria MAE quando quero representar o erro típico de forma mais robusta e RMSE quando erros grandes têm custo maior
+
+## Imagine que você treinou uma regressão linear e encontrou R² alto, mas também RMSE alto. Isso é contraditório? Como um modelo pode apresentar R² alto e, ao mesmo tempo, erros absolutos grandes?
+Não é contraditório. O R² mede quanto da variabilidade do target o modelo explica em relação ao baseline da média, enquanto o RMSE mede o tamanho absoluto dos erros na unidade do target. Se o target tiver grande dispersão, o modelo pode explicar uma proporção alta dessa variabilidade e ainda assim cometer erros absolutos grandes.”
+
+
+## Você tem dois modelos de regressão:
+- Modelo A: MAE = 300 e RMSE = 900
+- Modelo B: MAE = 450 e RMSE = 500
+O que essa diferença entre MAE e RMSE sugere sobre os erros de cada modelo? Qual deles parece sofrer mais com erros extremos? 
+
+Quando o RMSE fica muito acima do MAE, isso sugere a presença de alguns erros grandes, porque o RMSE penaliza quadraticamente esses desvios. No Modelo A, a diferença entre 300 e 900 indica maior presença de erros extremos. No Modelo B, como MAE e RMSE estão próximos, os erros parecem mais homogêneos.
+
+RMSE > MAE = prováveis erros extremos

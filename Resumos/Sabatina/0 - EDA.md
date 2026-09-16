@@ -8,7 +8,10 @@
 - Medidas de Centralidade ✅
 - Distribuição Assimetrica ✅
 - Analise de variaveis Categoricas e Numericas ✅
+- Multicolinearidade ✅
+- VIF ✅
 - Correlação de Person x Spearman ✅
+- Erro de hipotese tipo I e II ✅
 
 ---
 ## Explique como você começa um EDA do zero em uma base nova.
@@ -107,3 +110,9 @@ Multicolinearidade ocorre quando existe forte relação linear entre os preditor
 
 ## Qual é a diferença entre correlação de Pearson e Spearman? Em que tipo de relação ou dado você preferiria usar Spearman em vez de Pearson?
 Pearson mede correlação linear usando os valores originais das variáveis. Spearman mede associação monotônica usando os postos dos valores. Eu preferiria Spearman quando os dados são ordinais, quando a relação é monotônica mas não necessariamente linear, ou quando quero reduzir a influência de outliers. Nenhum dos dois, isoladamente, detecta toda forma de dependência não linear.
+
+## Em um teste de hipótese, qual é a diferença entre erro tipo I e erro tipo II? E como eles se relacionam com falso positivo e falso negativo?
+Erro Tipo I ocorre quando rejeitamos uma hipótese nula verdadeira, sendo análogo a um falso positivo. Erro Tipo II ocorre quando não rejeitamos uma hipótese nula falsa, sendo análogo a um falso negativo. O erro Tipo I é controlado pelo nível de significância \(\alpha\), enquanto o erro Tipo II é representado por \(\beta\), e o poder do teste é \(1-\beta\)
+
+Tipo I = falso positivo
+Tipo II = falso negativo

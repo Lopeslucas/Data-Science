@@ -32,6 +32,7 @@ Como lidar com as desvantagens
 ---
 # Pontos cobertos pelo questionario abaixo:
 - Premissas da Regressão Linear ✅
+- Por que os residuos sao elevados ao quadrado
 - Impacto dos outliers nos modelos de regressao linear
 - Como identificar Homocedasticidade/ Heterocedasticidade ✅
 - Transformação Logarítmica ✅
@@ -54,6 +55,9 @@ A regressão linear assume algumas premissas importantes.
 4. Normalidade dos resíduos, que é importante principalmente para inferência estatística.
 5. Ausência de multicolinearidade forte entre as variáveis explicativas, pois isso pode tornar os coeficientes instáveis.
 6. Quando essas premissas são violadas, podemos ter problemas como coeficientes não confiáveis, pior generalização ou inferências incorretas.
+
+## No método dos mínimos quadrados, por que elevamos os resíduos ao quadrado em vez de simplesmente somar. O que aconteceria se apenas somássemos os resíduos positivos e negativos?
+Se apenas somássemos os resíduos, erros positivos e negativos poderiam se cancelar, dando uma falsa impressão de baixo erro. Ao elevar os resíduos ao quadrado, todos passam a contribuir positivamente para a função objetivo, e erros maiores recebem penalização maior. Além disso, a função quadrática é conveniente para otimização.
 
 ## Em regressão linear, por que um outlier pode influenciar muito os coeficientes estimados pelo método dos mínimos quadrados?
 O MQO é sensível a outliers porque minimiza a soma dos resíduos ao quadrado. Como erros grandes são elevados ao quadrado, observações extremas podem ter peso desproporcional na função objetivo e puxar a reta, alterando os coeficientes. Pontos extremos nas variáveis explicativas também podem ter alto leverage e ser especialmente influentes
